@@ -19,38 +19,38 @@
 
 """This package contains round behaviours of ComponentLoadingAbciApp."""
 
-import sys
-import time
 import importlib
+import sys
 import threading
+import time
 from abc import ABC
 from enum import Enum
 from glob import glob
-from typing import Any, Set, Type, Optional, Generator, cast
 from pathlib import Path
+from typing import Any, Generator, Optional, Set, Type, cast
 
 import yaml
-from packages.valory.skills.abstract_round_abci.base import AbstractRound
+
 from packages.eightballer.skills.ui_loader_abci.models import (
     Params,
     UserInterfaceClientStrategy,
 )
 from packages.eightballer.skills.ui_loader_abci.rounds import (
-    Event,
-    ErrorRound,
-    SetupRound,
-    ErrorPayload,
-    SetupPayload,
-    HealthcheckRound,
-    SynchronizedData,
-    HealthcheckPayload,
     ComponentLoadingAbciApp,
+    ErrorPayload,
+    ErrorRound,
+    Event,
+    HealthcheckPayload,
+    HealthcheckRound,
+    SetupPayload,
+    SetupRound,
+    SynchronizedData,
 )
+from packages.valory.skills.abstract_round_abci.base import AbstractRound
 from packages.valory.skills.abstract_round_abci.behaviours import (
-    BaseBehaviour,
     AbstractRoundBehaviour,
+    BaseBehaviour,
 )
-
 
 DEFAULT_FRONTEND_DIR = "frontend"
 
@@ -63,7 +63,7 @@ def dynamic_import(component_name, module_name):
 
 
 class HttpStatus(Enum):
-    """HttpStatus Enum."""
+    """HttpStatus Enum"""
 
     OK = 200
     NOT_FOUND = 404
@@ -85,7 +85,7 @@ class ComponentLoadingBaseBehaviour(BaseBehaviour, ABC):
 
 
 class ErrorBehaviour(ComponentLoadingBaseBehaviour):
-    """ErrorBehaviour."""
+    """ErrorBehaviour"""
 
     matching_round: Type[AbstractRound] = ErrorRound
 
@@ -116,7 +116,7 @@ class ErrorBehaviour(ComponentLoadingBaseBehaviour):
 
 
 class HealthcheckBehaviour(ComponentLoadingBaseBehaviour):
-    """HealthcheckBehaviour."""
+    """HealthcheckBehaviour"""
 
     matching_round: Type[AbstractRound] = HealthcheckRound
 
@@ -142,7 +142,7 @@ class HealthcheckBehaviour(ComponentLoadingBaseBehaviour):
 
 
 class SetupBehaviour(ComponentLoadingBaseBehaviour):
-    """SetupBehaviour."""
+    """SetupBehaviour"""
 
     matching_round: Type[AbstractRound] = SetupRound
 
@@ -233,14 +233,16 @@ class SetupBehaviour(ComponentLoadingBaseBehaviour):
 
     @property
     def custom_ui_component(self) -> bool:
-        """Check load of custom UI component."""
+        """Check laod of custom UI component."""
         author, component_name = self.params.user_interface_name.split("/")
         directory = Path("vendor") / author / "customs" / component_name
         config = yaml.safe_load((directory / "component.yaml").read_text())
         return author, component_name, directory, config
 
     def load_behaviours(self, author, component_name, directory, config) -> bool:
-        """Load in the behaviours for the ComponentLoadingRoundBehaviour."""
+        """
+        load in the behaviours for the ComponentLoadingRoundBehaviour
+        """
         self.context.logger.info(
             f"Loading behaviours for Author: {author} Component: {component_name} in {directory}"
         )
@@ -271,7 +273,9 @@ class SetupBehaviour(ComponentLoadingBaseBehaviour):
     def load_handlers(
         self, author, component_name, directory, config
     ) -> Generator[Any, Any, None]:
-        """Load in the handlers for the ComponentLoadingRoundBehaviour."""
+        """
+        load in the handlers for the ComponentLoadingRoundBehaviour
+        """
 
         self.context.logger.info(
             f"Loading handlers for Author: {author}, Component: {component_name} from {directory}"
@@ -289,7 +293,6 @@ class SetupBehaviour(ComponentLoadingBaseBehaviour):
             )
             self.context.user_interface_client_strategy.handlers.append(handler)
             self.context.logger.info(f"Handler {class_name} loaded.")
-
             handler_methods = [
                 method
                 for method in dir(handler)
@@ -303,7 +306,7 @@ class SetupBehaviour(ComponentLoadingBaseBehaviour):
 
 
 class ComponentLoadingRoundBehaviour(AbstractRoundBehaviour):
-    """ComponentLoadingRoundBehaviour."""
+    """ComponentLoadingRoundBehaviour"""
 
     initial_behaviour_cls = SetupBehaviour
     abci_app_cls = ComponentLoadingAbciApp  # type: ignore

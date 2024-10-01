@@ -9,8 +9,8 @@ fingerprint:
   __init__.py: bafybeie3a4f2zzoofzbe6yy6rivj7qtj4kye6qrl74kgfvs3gm3zrczwx4
   behaviours.py: bafybeigf3axasho2oxlc3bpnfadmsndoqgmsh4kjx3xdbaumyx2ic5idze
   build/index.html: bafybeigyjfv75r7fnd7mw63vbidusohzopzyz47c5nmc3tiak5yh22gbfi
-  handlers.py: bafybeiedmpnjlu6ebvflknvodplejyriu3we3dnxlzeq5hbjgwte5ambaa
-  openapi3_spec.yaml: bafybeiagdbghwj4t4o7uctojvtkjp7i6zxpwu6dltjsawcaeuteyipftty
+  handlers.py: bafybeifrqaxzxzise5k7taguupq4soh7bbiqcseylra7bwmfkrq6w3h2ja
+  openapi3_spec.yaml: bafybeibdvlfbr4ghin75dyqjyd3zbusq45uekmuoftmj74k4cvnq2rapci
   tests/test_custom.py: bafybeidafbtgi6v6gnvlkaxiyocgebdkrgcfzoj4j27zsfjbjjviaio6li
 fingerprint_ignore_patterns: []
 dependencies: {}

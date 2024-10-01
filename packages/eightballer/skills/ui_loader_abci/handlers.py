@@ -21,7 +21,6 @@
 
 import json
 from typing import Optional, cast
-from urllib.parse import urlparse
 
 from aea.protocols.base import Message
 
@@ -68,7 +67,7 @@ class BaseHandler(BaseHttpHandler):
         )
 
     def get_headers(self, original_headers: str) -> str:
-        """Appends cors headers."""
+        """Appends cors headers"""
         cors_headers = "Access-Control-Allow-Origin: *\n"
         cors_headers += "Access-Control-Allow-Methods: GET,POST\n"
         cors_headers += "Access-Control-Allow-Headers: Content-Type,Accept\n"
@@ -81,7 +80,6 @@ class UserInterfaceHttpHandler(BaseHandler):
     SUPPORTED_PROTOCOL = UiHttpMessage.protocol_id
 
     def handle(self, message: Message) -> None:
-        """Handle the message."""
         self.context.logger.debug("Handling new http connection message in skill")
         message = cast(UiHttpMessage, message)
         dialogue = self.context.user_interface_http_dialogues.update(message)
@@ -93,7 +91,9 @@ class UserInterfaceHttpHandler(BaseHandler):
         self.handle_http_request(message, dialogue)
 
     def handle_http_request(self, message: UiHttpMessage, dialogue) -> None:
-        """We handle the http request to return the necessary files."""
+        """
+        We handle the http request to return the necessary files.
+        """
         if self.is_api_route(message.url):
             headers, content = self.handle_api_request(message, dialogue)
         elif self.is_websocket_request(message):
@@ -103,21 +103,26 @@ class UserInterfaceHttpHandler(BaseHandler):
         return self.send_http_response(message, dialogue, headers, content)
 
     def is_api_route(self, url: str) -> bool:
-        """Check if the url is an api route."""
+        """
+        Check if the url is an api route.
+        """
         parts = url.split("/")
         if "api" in parts:
-            self.context.logger.info(f"API route detected: {url}")
             return True
         return False
 
     def is_websocket_request(self, message: UiHttpMessage) -> bool:
-        """Check if the request is a websocket request using the headers."""
+        """
+        Check if the request is a websocket request using the headers.
+        """
         if "Upgrade: websocket" in message.headers:
             return True
         return False
 
     def handle_websocket_request(self, message: UiHttpMessage, dialogue) -> None:
-        """Handle the websocket request."""
+        """
+        Handle the websocket request.
+        """
         self.strategy.clients[
             dialogue.incomplete_dialogue_label.get_incomplete_version().dialogue_reference[
                 0
@@ -129,46 +134,45 @@ class UserInterfaceHttpHandler(BaseHandler):
             f"Handling websocket request in skill: {message.dialogue_reference}"
         )
 
-    def handle_api_request(self, message: UiHttpMessage, dialogue) -> tuple[str, bytes]:
-        """Handle the api request."""
-        self.context.logger.info(f"Received api route request: {message.url}")
+    def handle_api_request(self, message: UiHttpMessage, dialogue) -> bytes:
+        """
+        Handle the api request.
+        """
+        self.context.logger.info(
+            f"Received api route request: {message.url} from {dialogue.incomplete_dialogue_label}"
+        )
+        parts = message.url.split("/")
+        headers = "Content-Type: application/json; charset=utf-8\n"
+        data = {}
 
-        for handler in self.strategy.handlers:
+        if len(parts) < 4:
+            # in a later iteration we should return the open-api spec here.
+            return headers, json.dumps(data).encode("utf-8")
+
+        if parts[-1] == "agent-info":
+            data = {
+                "service-id": self.context.params.on_chain_service_id,
+                "safe-address": self.context.params.setup_params[
+                    "safe_contract_address"
+                ],
+                "agent-address": self.context.agent_address,
+                "agent-status": "active" if self.context.is_active else "inactive",
+            }
+        for handler in self.context.user_interface_client_strategy.handlers:
             result = handler.handle(message)
             if result is not None:
                 return "Content-Type: application/json\n", json.dumps(result).encode("utf-8")
 
         # If no handler processed the request
         return "Content-Type: application/json\n", json.dumps({"error": "Not Found"}).encode("utf-8")
-        # parsed_url = urlparse(message.url)
-        # path_parts = parsed_url.path.strip("/").split("/")
-
-        # if len(path_parts) < 2 or path_parts[0] != "api":
-        #     return "Content-Type: application/json\n", json.dumps({"error": "Invalid API route"}).encode("utf-8")
-
-        # resource = path_parts[1]
-        # operation = message.method.lower()
-
-        # handler_method_name = f"handle_{operation}_{resource}"
-
-        # if len(path_parts) > 2:
-        #     handler_method_name += "_" + "_".join(path_parts[2:])
-
-        # for handler in self.strategy.handlers:
-        #     if hasattr(handler, handler_method_name):
-        #         self.context.logger.info(f"Found handler method in {handler.__class__.__name__}")
-        #         result = getattr(handler, handler_method_name)(message)
-        #         return "Content-Type: application/json\n", json.dumps(result).encode("utf-8")
-
-        # self.context.logger.warning(f"No handler found for: {handler_method_name}")
-        # return "Content-Type: application/json\n", json.dumps({"error": "Not Found"}).encode("utf-8")
 
     def handle_frontend_request(self, message: UiHttpMessage, dialogue) -> bytes:
-        """Handle the frontend request."""
+        """
+        Handle the frontend request.
+        """
         del dialogue
 
         routes = self.strategy.routes
-        self.context.logger.debug(f"Available routes: {list(routes.keys())}")
         path = "/".join(message.url.split("/")[3:])
         if path == "":
             path = "index.html"
@@ -178,10 +182,10 @@ class UserInterfaceHttpHandler(BaseHandler):
         else:
             content = routes.get(path, None)
         # we want to extract the path from the url
-        self.context.logger.info(f"Received request for path: {path}")
+        self.context.logger.info("Received request for path: {path}")
 
         if path is None or content is None:
-            self.context.logger.warning(f"Context not found for path: {path}")
+            self.context.logger.warning("Context not found for path: {path}")
             content = b"Not found!"
         # as we are serving the frontend, we need to set the headers accordingly
         # X-Content-Type-Options: nosniff
@@ -242,12 +246,12 @@ class UserInterfaceWsHandler(UserInterfaceHttpHandler):
             return self._handle_disconnect(message, dialogue)
         # it is an existing dialogue
         if dialogue is None:
-            self.context.logger.error(f"Could not locate dialogue for message={message}")
+            self.context.logger.error("Could not locate dialogue for message={message}")
             return None
         if message.performative == WebsocketsMessage.Performative.SEND:
             return self._handle_send(message, dialogue)
         self.context.logger.warning(
-            f"Cannot handle websockets message of performative={message.performative}"
+            "Cannot handle websockets message of performative={message.performative}"
         )
         return None
 
@@ -306,7 +310,7 @@ class UserInterfaceWsHandler(UserInterfaceHttpHandler):
         dialogue: WebsocketsDialogue = self.websocket_dialogues.get_dialogue(message)
 
         if dialogue:
-            self.context.logger.debug(f"Already have a dialogue for message={message}")
+            self.context.logger.debug("Already have a dialogue for message={message}")
             return
         client_reference = message.url
         dialogue = self.websocket_dialogues.update(message)
@@ -316,7 +320,7 @@ class UserInterfaceWsHandler(UserInterfaceHttpHandler):
             target_message=message,
         )
         self.context.logger.info(
-            f"Handling connect message in skill: {client_reference}"
+            "Handling connect message in skill: {client_reference}"
         )
         self.strategy.clients[client_reference] = dialogue
         self.context.outbox.put_message(message=response_msg)
