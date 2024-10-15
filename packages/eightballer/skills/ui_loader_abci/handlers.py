@@ -146,22 +146,6 @@ class UserInterfaceHttpHandler(BaseHandler):
 
         parts = message.url.split("/")
 
-        for handler in self.strategy.handlers:
-            message.dialogue = dialogue
-            result = handler.handle(message)
-            self.context.logger.debug(f"Received result: {result}")
-            if result is not None:
-                headers = CONTENT_TYPE_JSON
-                content = json.dumps(result.content).encode(DEFAULT_ENCODING)
-                return UiHttpMessage(
-                    performative=UiHttpMessage.Performative.RESPONSE,
-                    status_code=result.status_code,
-                    status_text=result.status_text,
-                    headers=headers,
-                    version=message.version,
-                    body=content,
-                )
-
         if parts[-1] == "agent-info":
             data = {
                 "service-id": self.context.params.on_chain_service_id,
@@ -180,6 +164,39 @@ class UserInterfaceHttpHandler(BaseHandler):
                 version=message.version,
                 body=content,
             )
+
+        for handler in self.strategy.handlers:
+            message.dialogue = dialogue
+            result = handler.handle(message)
+            self.context.logger.info(f"Received result: {result}")
+            if result is not None:
+                headers = CONTENT_TYPE_JSON
+
+                if isinstance(result, str):
+                    content = json.dumps({"message": result}).encode(DEFAULT_ENCODING)
+                    status_code = 200
+                    status_text = "OK"
+                elif isinstance(result, dict):
+                    content = json.dumps(result.content).encode(DEFAULT_ENCODING)
+                    status_code = result.status_code
+                    status_text = result.status_text
+                else:
+                    content = json.dumps({"message": "Unsupported result type"}).encode(
+                        DEFAULT_ENCODING
+                    )
+                    status_code = 500
+                    status_text = "Internal Server Error"
+
+                return UiHttpMessage(
+                    performative=UiHttpMessage.Performative.RESPONSE,
+                    status_code=status_code,
+                    status_text=status_text,
+                    headers=headers,
+                    version=message.version,
+                    body=content,
+                )
+
+        
 
         headers = CONTENT_TYPE_JSON
         content = json.dumps(ERROR_RESPONSE).encode(DEFAULT_ENCODING)
@@ -328,7 +345,7 @@ class UserInterfaceWsHandler(UserInterfaceHttpHandler):
         for handler_func in self.strategy.handlers:
             response_data = handler_func.handle(message)
             if response_data is not None:
-                self.context.logger.info("Handling message in skill: {message.data}")
+                self.context.logger.info(f"Handling message in skill: {message.data}")
                 response_message = dialogue.reply(
                     performative=WebsocketsMessage.Performative.SEND,
                     target_message=dialogue.last_message,
