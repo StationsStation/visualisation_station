@@ -147,12 +147,11 @@ class UserInterfaceHttpHandler(BaseHandler):
         parts = message.url.split("/")
 
         for handler in self.strategy.handlers:
-            message.dialogue = dialogue
             result = handler.handle(message)
             self.context.logger.debug(f"Received result: {result}")
             if result is not None:
                 headers = CONTENT_TYPE_JSON
-                content = json.dumps(result.content).encode(DEFAULT_ENCODING)
+                content = result.body
                 return UiHttpMessage(
                     performative=UiHttpMessage.Performative.RESPONSE,
                     status_code=result.status_code,
