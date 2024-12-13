@@ -48,6 +48,7 @@ skills:
 customs:
 - eightballer/simple_html:0.1.0:bafybeig6yg632o4bc2lra5rzzlbjux32caktbvgb5e3fohi5huynyfx44m
 - eightballer/simple_react:0.1.0:bafybeigkrh2k5xlinbb2amkpyxbozy7c6qxqfow27wgmn7i4ltnqqunqc4
+- asiyaasha/simple_svelte:0.1.0:bafybeibalwvhzkaeirfuyjcso2wncnlieike6veuzf5fh2iuseu4nwnbci
 default_ledger: ethereum
 required_ledgers:
 - ethereum
@@ -147,7 +148,7 @@ models:
     args:
       user_interface:
         enabled: true
-        custom_component: eightballer/simple_react
+        custom_component: asiyaasha/simple_svelte
       setup:
         all_participants: ${list:["0x0000000000000000000000000000000000000000"]}
         consensus_threshold: ${int:null}

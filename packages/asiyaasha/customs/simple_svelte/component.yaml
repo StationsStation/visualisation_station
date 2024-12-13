@@ -1,0 +1,29 @@
+name: simple_svelte
+author: asiyaasha
+version: 0.1.0
+type: custom
+description: A simple svelte frontend to act as a template for the frontend ABCI loader.
+license: Apache-2.0
+aea_version: '>=1.0.0, <2.0.0'
+fingerprint:
+  __init__.py: bafybeicqdyeaojreztodxbtn5f6kmkgipmr3nj5ssoy3jok4wtsderuz2i
+  behaviours.py: bafybeigf3axasho2oxlc3bpnfadmsndoqgmsh4kjx3xdbaumyx2ic5idze
+  build/bundle.css: bafybeig456xhklhuqfnudrssbkcgokpef2usebbxwdoybgx3lewepdp2q4
+  build/bundle.js: bafybeianv2mak62jxqlzvbeoilqnbyobhrfowusvb2wltwolvpckzlutga
+  build/bundle.js.map: bafybeigd6flnm6v4lf2do7hbw4l4oabuqzbbhjwcobj4cswv2yccgd7hsy
+  build/index.html: bafybeieurji5so5uh35zps75sx6nwnpdybgslpasp5xontsao7orpz7sjm
+  handlers.py: bafybeiedmpnjlu6ebvflknvodplejyriu3we3dnxlzeq5hbjgwte5ambaa
+  openapi3_spec.yaml: bafybeiagdbghwj4t4o7uctojvtkjp7i6zxpwu6dltjsawcaeuteyipftty
+  readme.md: bafybeiabx7q7jiwr7vfucj5rdekzhhqac2tcezamtg7nwoup3bicfgrsoa
+  tests/__init__.py: bafybeih4oyyzgld4vqtbub6zrcrrfofbhmhbr37rvoxuhzchn3bhhjs7za
+  tests/test_simple_html.py: bafybeidafbtgi6v6gnvlkaxiyocgebdkrgcfzoj4j27zsfjbjjviaio6li
+fingerprint_ignore_patterns: []
+dependencies: {}
+api_spec: open_api3_spec.yaml
+frontend_dir: build
+behaviours:
+- class_name: LogReadingBehaviour
+  args: {}
+handlers:
+- class_name: PingPongHandler
+  args: {}
