@@ -10,7 +10,7 @@ description: Enables augmentation of the agents using a meta-framework for the c
 aea_version: '>=1.0.0, <2.0.0'
 fingerprint:
   tests/__init__.py: bafybeihzyvuskw7vsf6drqqpg7sbttzqruhhl5vvjmbruidmx53nvm4ndq
-  tests/test_agent.py: bafybeiaz6jd4fkjwyuwkzh55fj4l32lg2gtuntxbsijsk7f5qfh7shxvce
+  tests/test_agent.py: bafybeify6jpwbgjsihnrx7d3s7gw7mrffnsuwqce7huxsbw32elyv3rm74
 fingerprint_ignore_patterns: []
 connections:
 - eightballer/http_client:0.1.0:bafybeidxqvcgobltkb5rgokakcfo25ntfhlffmpzqap6oid4ttmwbvn4qi
@@ -48,7 +48,7 @@ skills:
 customs:
 - eightballer/simple_html:0.1.0:bafybeig6yg632o4bc2lra5rzzlbjux32caktbvgb5e3fohi5huynyfx44m
 - eightballer/simple_react:0.1.0:bafybeigkrh2k5xlinbb2amkpyxbozy7c6qxqfow27wgmn7i4ltnqqunqc4
-- asiyaasha/simple_svelte:0.1.0:bafybeibalwvhzkaeirfuyjcso2wncnlieike6veuzf5fh2iuseu4nwnbci
+- asiyaasha/simple_svelte:0.1.0:bafybeihz4zqjnsntl4wdfceweiwdoel4dtldeby4ne33xpcfz5og3i2aqm
 default_ledger: ethereum
 required_ledgers:
 - ethereum
