@@ -5,15 +5,14 @@ import subprocess
 from pathlib import Path
 
 import pytest
-import requests
 from web3 import Web3
 from aea.test_tools.test_cases import AEATestCaseMany
 from aea.configurations.constants import (
     LAUNCH_SUCCEED_MESSAGE,
     DEFAULT_PRIVATE_KEY_FILE,
 )
-from aea_test_autonomy.configurations import ANY_ADDRESS, DEFAULT_REQUESTS_TIMEOUT
-from aea_test_autonomy.fixture_helpers import (
+from aea_test_autonomy.configurations import ANY_ADDRESS
+from aea_test_autonomy.fixture_helpers import (  # noqa: F401
     UseTendermint,
     abci_host,
     abci_port,
@@ -24,7 +23,6 @@ from aea_test_autonomy.fixture_helpers import (
 
 
 DEFAULT_ENCODING = "utf-8"
-TENDERMINT_URL = "http://localhost:8080/hard_reset"
 TERMINATION_TIMEOUT = 30
 DEFAULT_LAUNCH_TIMEOUT = 30
 AGENT_NAME = "frontend_agent"
