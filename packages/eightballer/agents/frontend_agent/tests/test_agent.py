@@ -5,22 +5,21 @@ import subprocess
 from pathlib import Path
 
 import pytest
-from web3 import Web3
-from aea.test_tools.test_cases import AEATestCaseMany
 from aea.configurations.constants import (
-    LAUNCH_SUCCEED_MESSAGE,
     DEFAULT_PRIVATE_KEY_FILE,
+    LAUNCH_SUCCEED_MESSAGE,
 )
+from aea.test_tools.test_cases import AEATestCaseMany
 from aea_test_autonomy.configurations import ANY_ADDRESS
 from aea_test_autonomy.fixture_helpers import (  # noqa: F401
     UseTendermint,
     abci_host,
     abci_port,
-    tendermint,
     ipfs_daemon,
+    tendermint,
     tendermint_port,
 )
-
+from web3 import Web3
 
 DEFAULT_ENCODING = "utf-8"
 TERMINATION_TIMEOUT = 30
