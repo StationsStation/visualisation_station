@@ -6,7 +6,7 @@ description: A simple svelte frontend to act as a template for the frontend ABCI
 license: Apache-2.0
 aea_version: '>=1.0.0, <2.0.0'
 fingerprint:
-  __init__.py: bafybeicqdyeaojreztodxbtn5f6kmkgipmr3nj5ssoy3jok4wtsderuz2i
+  __init__.py: bafybeie3a4f2zzoofzbe6yy6rivj7qtj4kye6qrl74kgfvs3gm3zrczwx4
   behaviours.py: bafybeigf3axasho2oxlc3bpnfadmsndoqgmsh4kjx3xdbaumyx2ic5idze
   build/bundle.css: bafybeig456xhklhuqfnudrssbkcgokpef2usebbxwdoybgx3lewepdp2q4
   build/bundle.js: bafybeianv2mak62jxqlzvbeoilqnbyobhrfowusvb2wltwolvpckzlutga
