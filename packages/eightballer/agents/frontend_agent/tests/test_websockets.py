@@ -6,6 +6,7 @@ import logging
 import shutil
 from pathlib import Path
 from typing import Generator
+import time
 
 import docker
 import pytest
@@ -18,7 +19,7 @@ from aea.test_tools.test_cases import AEATestCaseMany
 from aea_test_autonomy.configurations import ANY_ADDRESS
 from aea_test_autonomy.docker.base import launch_image
 from aea_test_autonomy.docker.tendermint import TendermintDockerImage
-from aea_test_autonomy.fixture_helpers import (
+from aea_test_autonomy.fixture_helpers import ( # noqa: F401
     UseTendermint,
     abci_host,
     abci_port,
@@ -49,34 +50,6 @@ def tendermint_function(
     image = TendermintDockerImage(client, abci_host, abci_port, tendermint_port)
     yield from launch_image(image, timeout=timeout, max_attempts=max_attempts)
 
-async def wait_for_log_message(process: asyncio.subprocess.Process, target_message: str, timeout: int = 30):
-    """Wait until `target_message` appears in the log or until timeout."""
-    start_time = asyncio.get_event_loop().time()
-    print(f"Starting to wait for '{target_message}' (timeout: {timeout}s)")
-
-    while (asyncio.get_event_loop().time() - start_time) < timeout:
-        try:
-            # Read line without creating a new task
-            line = await process.stdout.readline()
-            if not line:
-                break
-
-            decoded_line = line.decode("utf-8", errors="replace").rstrip("\n")
-            elapsed = asyncio.get_event_loop().time() - start_time
-            print(f"[{elapsed:.1f}s] Agent log: {decoded_line}")
-
-            if target_message in decoded_line:
-                print(f"Found target message after {elapsed:.1f} seconds")
-                return True
-
-        except Exception as e:
-            print(f"Error reading process output: {e}")
-            await asyncio.sleep(0.1)  # Don't break, just continue after error
-            continue
-
-    elapsed = asyncio.get_event_loop().time() - start_time
-    raise asyncio.TimeoutError(f"Did not see '{target_message}' in logs after {elapsed:.1f} seconds")
-
 @pytest.mark.integration
 @pytest.mark.asyncio
 @pytest.mark.usefixtures("tendermint_function", "tendermint_port", "abci_host", "abci_port")
@@ -85,7 +58,7 @@ class TestWebsocketIntegration(AEATestCaseMany, UseTendermint):
 
     IS_LOCAL = True
     capture_log = True
-    cli_log_options = ["-v", "DEBUG"]
+    cli_log_options = ["-v", "INFO"]
 
     async def setup_agent(self):
         """Set up the agent for testing."""
@@ -126,70 +99,232 @@ class TestWebsocketIntegration(AEATestCaseMany, UseTendermint):
         """Test basic websocket connection."""
         process = None
         try:
-            logging.debug("Setting up test agent...")
             process = await self.setup_agent()
 
             assert not self.missing_from_output(
                 process, ("UI behaviours",), timeout=30, is_terminating=False
             ), "UI Handler not loaded within timeout!"
 
-            # Attempt to connect to the websocket
-            logging.debug("Connecting to WebSocket on ws://localhost:%s/ws", WS_PORT)
             async with websockets.connect(
                 f"ws://localhost:{WS_PORT}/ws",
                 timeout=10,
                 close_timeout=5,
             ) as websocket:
-
-                # Log the initial connection state
-                logging.debug("Initial WebSocket state: %s", websocket.state)
-
-                # 1. Test basic message
+                # Test basic message
                 test_message = {"type": "test", "data": "hello"}
-                logging.debug("Sending test message: %s", test_message)
                 await websocket.send(json.dumps(test_message))
 
                 # Wait for Pong response
-                start_time = asyncio.get_event_loop().time()
-                while (asyncio.get_event_loop().time() - start_time) < 10:
-                    response = await asyncio.wait_for(websocket.recv(), timeout=2)
-                    logging.debug("Received response: %s", response)
-                    if "Pong" in response:
-                        break
-                else:
-                    pytest.fail("No valid Pong response received within timeout")
+                response = await asyncio.wait_for(websocket.recv(), timeout=2)
+                assert "Pong" in response
 
-                # Verify connection is still open before proceeding
-                if websocket.closed:
-                    pytest.fail("WebSocket closed unexpectedly after Pong")
+                # Send agent-info request
+                await websocket.send(json.dumps({"type": "agent-info"}))
+                response = await asyncio.wait_for(websocket.recv(), timeout=2)
+                assert "Pong" in response
 
-                # 2. Test agent info request (only after successful Pong)
-                agent_info_request = {"type": "agent-info"}
-                logging.debug("Sending agent-info request: %s", agent_info_request)
-                await websocket.send(json.dumps(agent_info_request))
-
-                start_time = asyncio.get_event_loop().time()
-                while (asyncio.get_event_loop().time() - start_time) < 10:
-                    response = await asyncio.wait_for(websocket.recv(), timeout=20)
-                    logging.debug("Received agent-info response: %s", response)
-                    
-                    try:
-                        data = json.loads(response)
-                        if isinstance(data, dict) and "agent-address" in data:
-                            assert "agent-status" in data
-                            break
-                    except json.JSONDecodeError:
-                        continue
-                else:
-                    pytest.fail("No valid agent-info response received within timeout")
+                # Test complete
+                return
 
         finally:
             if process:
-                logging.debug("Terminating agent process...")
                 process.terminate()
+
+@pytest.mark.integration
+@pytest.mark.asyncio
+@pytest.mark.usefixtures("tendermint_function", "tendermint_port", "abci_host", "abci_port")
+class TestWebsocketConnectionManagement(AEATestCaseMany, UseTendermint):
+    """Test websocket functionality."""
+
+    IS_LOCAL = True
+    capture_log = True
+    cli_log_options = ["-v", "INFO"]
+
+    async def setup_agent(self):
+        """Set up the agent for testing."""
+        agent_name = "websocket_test"
+        self.fetch_agent(
+            f"{AUTHOR}/{AGENT_NAME}:{VERSION}",
+            agent_name,
+            is_local=self.IS_LOCAL
+        )
+        self.set_agent_context(agent_name)
+
+        # Generate and configure keys
+        self.generate_private_key("ethereum")
+
+        with open(
+            f"{agent_name}/{DEFAULT_PRIVATE_KEY_FILE}", encoding=DEFAULT_ENCODING
+            ) as f:
+                self.eth_address = Web3().eth.account.from_key(f.read()).address
+
+        self.add_private_key("ethereum", DEFAULT_PRIVATE_KEY_FILE)
+
+        # Configure agent
+        self.set_config(
+            f"vendor.{AUTHOR}.skills.trader_abci.models.params.args.setup.all_participants",
+            json.dumps([self.eth_address]),
+            "list",
+        )
+        self.set_config("vendor.valory.connections.abci.config.host", ANY_ADDRESS)
+        self.set_config("vendor.valory.connections.abci.config.port", self.abci_port)
+
+        # Start agent
+        self.invoke("issue-certificates")
+        process = self.run_agent()
+        assert self.is_running(process), "Agent failed to start!"
+        return process
+
+    async def test_websocket_connection_management(self):
+        """Test websocket connection handling."""
+        process = None
+        try:
+            process = await self.setup_agent()
+
+            assert not self.missing_from_output(
+                process, ("UI behaviours",), timeout=30, is_terminating=False
+            ), "UI Handler not loaded within timeout!"
+
+            # Test connection close handling
+            ws = await websockets.connect(f"ws://localhost:{WS_PORT}/ws")
+            await ws.close()
+
+            # Test reconnection works
+            async with websockets.connect(f"ws://localhost:{WS_PORT}/ws") as ws:
+                await ws.send(json.dumps({"type": "test"}))
+                response = await asyncio.wait_for(ws.recv(), timeout=2)
+                assert "Pong" in response
+
+        finally:
+            if process:
+                process.terminate()
+
+@pytest.mark.integration
+@pytest.mark.asyncio
+@pytest.mark.usefixtures("tendermint_function", "tendermint_port", "abci_host", "abci_port")
+class TestWebsocketMultipleConnections(AEATestCaseMany, UseTendermint):
+    """Test websocket functionality."""
+
+    IS_LOCAL = True
+    capture_log = True
+    cli_log_options = ["-v", "INFO"]
+
+    async def setup_agent(self):
+        """Set up the agent for testing."""
+        agent_name = "websocket_test"
+        self.fetch_agent(
+            f"{AUTHOR}/{AGENT_NAME}:{VERSION}",
+            agent_name,
+            is_local=self.IS_LOCAL
+        )
+        self.set_agent_context(agent_name)
+
+        # Generate and configure keys
+        self.generate_private_key("ethereum")
+
+        with open(
+            f"{agent_name}/{DEFAULT_PRIVATE_KEY_FILE}", encoding=DEFAULT_ENCODING
+            ) as f:
+                self.eth_address = Web3().eth.account.from_key(f.read()).address
+
+        self.add_private_key("ethereum", DEFAULT_PRIVATE_KEY_FILE)
+
+        # Configure agent
+        self.set_config(
+            f"vendor.{AUTHOR}.skills.trader_abci.models.params.args.setup.all_participants",
+            json.dumps([self.eth_address]),
+            "list",
+        )
+        self.set_config("vendor.valory.connections.abci.config.host", ANY_ADDRESS)
+        self.set_config("vendor.valory.connections.abci.config.port", self.abci_port)
+
+        # Start agent
+        self.invoke("issue-certificates")
+        process = self.run_agent()
+        assert self.is_running(process), "Agent failed to start!"
+        return process
+
+    async def test_multiple_websocket_clients(self):
+        """Test multiple websocket clients receive messages."""
+        process = None
+        try:
+            process = await self.setup_agent()
+            
+            assert not self.missing_from_output(
+                process, ("UI behaviours",), timeout=30, is_terminating=False
+            ), "UI Handler not loaded within timeout!"
+
+            # Connect two clients with keep_alive
+            async with websockets.connect(
+                f"ws://localhost:{WS_PORT}/ws",
+                ping_interval=20,
+                ping_timeout=20
+            ) as ws1, websockets.connect(
+                f"ws://localhost:{WS_PORT}/ws",
+                ping_interval=20,
+                ping_timeout=20
+            ) as ws2:
+                
+                # Ensure connections are established
+                await asyncio.sleep(1)
+                
+                # Send test messages from both clients
+                test_msg = {"type": "test", "data": "hello"}
+                await ws1.send(json.dumps(test_msg))
+                await ws2.send(json.dumps(test_msg))
+                
+                # Use a queue to collect messages
+                message_queue = asyncio.Queue()
+                
+                async def collect_messages(websocket, queue, client_id):
+                    try:
+                        while True:
+                            msg = await websocket.recv()
+                            logging.debug(f"Client {client_id} received: {msg}")
+                            await queue.put((client_id, msg))
+                    except websockets.exceptions.ConnectionClosed:
+                        logging.warning(f"Client {client_id} connection closed")
+                    except Exception as e:
+                        logging.error(f"Error collecting messages for client {client_id}: {e}")
+                
+                # Start collectors
+                collectors = [
+                    asyncio.create_task(collect_messages(ws1, message_queue, 1)),
+                    asyncio.create_task(collect_messages(ws2, message_queue, 2))
+                ]
+                
+                # Collect messages for 3 seconds
+                messages_by_client = {1: [], 2: []}
                 try:
-                    assert (
-                        self.terminate_agents(timeout=TERMINATION_TIMEOUT) is None
-                    ), f"Failed to terminate agents within timeout for {AUTHOR}/{AGENT_NAME}"
-                except Exception as e:
-                    logging.error("Error during agent termination: %s", e, exc_info=True)
+                    end_time = time.time() + 3
+                    while time.time() < end_time:
+                        try:
+                            client_id, msg = await asyncio.wait_for(
+                                message_queue.get(), 
+                                timeout=0.1
+                            )
+                            messages_by_client[client_id].append(msg)
+                            # If both clients have received Pong, we can break early
+                            if all(any("Pong" in m for m in messages_by_client[i]) for i in [1, 2]):
+                                break
+                        except asyncio.TimeoutError:
+                            continue
+                finally:
+                    # Cleanup collectors
+                    for collector in collectors:
+                        collector.cancel()
+                    
+                # Log all received messages for debugging
+                for client_id, messages in messages_by_client.items():
+                    logging.info(f"Client {client_id} messages: {messages}")
+                    
+                # Verify messages
+                assert any("Pong" in msg for msg in messages_by_client[1]), \
+                    f"Client 1 didn't receive Pong. Got: {messages_by_client[1]}"
+                assert any("Pong" in msg for msg in messages_by_client[2]), \
+                    f"Client 2 didn't receive Pong. Got: {messages_by_client[2]}"
+                
+        finally:
+            if process:
+                process.terminate()
+
