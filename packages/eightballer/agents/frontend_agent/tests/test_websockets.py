@@ -3,10 +3,10 @@
 import asyncio
 import json
 import logging
-import shutil
 from pathlib import Path
 from typing import Generator
 import time
+import contextlib
 
 import docker
 import pytest
@@ -254,75 +254,43 @@ class TestWebsocketMultipleConnections(AEATestCaseMany, UseTendermint):
                 process, ("UI behaviours",), timeout=30, is_terminating=False
             ), "UI Handler not loaded within timeout!"
 
-            # Connect two clients with keep_alive
-            async with websockets.connect(
-                f"ws://localhost:{WS_PORT}/ws",
-                ping_interval=20,
-                ping_timeout=20
-            ) as ws1, websockets.connect(
-                f"ws://localhost:{WS_PORT}/ws",
-                ping_interval=20,
-                ping_timeout=20
-            ) as ws2:
-                
-                # Ensure connections are established
-                await asyncio.sleep(1)
-                
-                # Send test messages from both clients
-                test_msg = {"type": "test", "data": "hello"}
-                await ws1.send(json.dumps(test_msg))
-                await ws2.send(json.dumps(test_msg))
-                
-                # Use a queue to collect messages
-                message_queue = asyncio.Queue()
-                
-                async def collect_messages(websocket, queue, client_id):
-                    try:
-                        while True:
-                            msg = await websocket.recv()
-                            logging.debug(f"Client {client_id} received: {msg}")
-                            await queue.put((client_id, msg))
-                    except websockets.exceptions.ConnectionClosed:
-                        logging.warning(f"Client {client_id} connection closed")
-                    except Exception as e:
-                        logging.error(f"Error collecting messages for client {client_id}: {e}")
-                
-                # Start collectors
-                collectors = [
-                    asyncio.create_task(collect_messages(ws1, message_queue, 1)),
-                    asyncio.create_task(collect_messages(ws2, message_queue, 2))
+            # Connect both clients using async context manager
+            async with contextlib.AsyncExitStack() as stack:
+                clients = [
+                    await stack.enter_async_context(
+                        websockets.connect(
+                            f"ws://localhost:{WS_PORT}/ws",
+                            ping_interval=20,
+                            ping_timeout=20
+                        )
+                    ) for _ in range(2)
                 ]
                 
-                # Collect messages for 3 seconds
-                messages_by_client = {1: [], 2: []}
-                try:
-                    end_time = time.time() + 3
-                    while time.time() < end_time:
+                # Send test messages
+                await asyncio.sleep(1)  # Ensure connections
+                test_msg = json.dumps({"type": "test", "data": "hello"})
+                await asyncio.gather(*[client.send(test_msg) for client in clients])
+                
+                # Collect responses with timeout
+                responses = {i: [] for i in range(2)}
+                async with asyncio.TaskGroup() as tg:
+                    async def collect(client_id):
                         try:
-                            client_id, msg = await asyncio.wait_for(
-                                message_queue.get(), 
-                                timeout=0.1
-                            )
-                            messages_by_client[client_id].append(msg)
-                            # If both clients have received Pong, we can break early
-                            if all(any("Pong" in m for m in messages_by_client[i]) for i in [1, 2]):
-                                break
-                        except asyncio.TimeoutError:
-                            continue
-                finally:
-                    # Cleanup collectors
-                    for collector in collectors:
-                        collector.cancel()
+                            while True:
+                                msg = await clients[client_id].recv()
+                                responses[client_id].append(msg)
+                                if "Pong" in msg:
+                                    break
+                        except Exception as e:
+                            logging.error(f"Client {client_id} error: {e}")
                     
-                # Log all received messages for debugging
-                for client_id, messages in messages_by_client.items():
-                    logging.info(f"Client {client_id} messages: {messages}")
-                    
-                # Verify messages
-                assert any("Pong" in msg for msg in messages_by_client[1]), \
-                    f"Client 1 didn't receive Pong. Got: {messages_by_client[1]}"
-                assert any("Pong" in msg for msg in messages_by_client[2]), \
-                    f"Client 2 didn't receive Pong. Got: {messages_by_client[2]}"
+                    for i in range(2):
+                        tg.create_task(collect(i))
+                
+                # Verify responses
+                assert all(any("Pong" in msg for msg in msgs) 
+                          for msgs in responses.values()), \
+                    f"Not all clients received Pong: {responses}"
                 
         finally:
             if process:
