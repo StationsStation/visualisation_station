@@ -85,37 +85,18 @@ class TestWebsocketIntegration(AEATestCaseMany, UseTendermint):
 
     IS_LOCAL = True
     capture_log = True
-    cli_log_options = ["-v", "INFO"]
-
-    #@classmethod
-    #def setup_class(cls):
-    #    """Set up the test class."""
-    #    super().setup_class()
-    #    cls.agent_name = "websocket_test"
-    #    # Clean up any existing test folders
-    #    test_path = Path(cls.agent_name)
-    #    if test_path.exists():
-    #        shutil.rmtree(test_path)
-
-    #@classmethod
-    #def teardown_class(cls):
-    #    """Tear down the test class."""
-    #    super().teardown_class()
-    #    # Clean up test folders
-    #    test_path = Path(cls.agent_name)
-    #    if test_path.exists():
-    #        shutil.rmtree(test_path)
+    cli_log_options = ["-v", "DEBUG"]
 
     async def setup_agent(self):
         """Set up the agent for testing."""
         agent_name = "websocket_test"
         self.fetch_agent(
-            f"{AUTHOR}/{AGENT_NAME}:{VERSION}", 
-            agent_name, 
+            f"{AUTHOR}/{AGENT_NAME}:{VERSION}",
+            agent_name,
             is_local=self.IS_LOCAL
         )
         self.set_agent_context(agent_name)
-        
+
         # Generate and configure keys
         self.generate_private_key("ethereum")
 
@@ -125,16 +106,16 @@ class TestWebsocketIntegration(AEATestCaseMany, UseTendermint):
                 self.eth_address = Web3().eth.account.from_key(f.read()).address
 
         self.add_private_key("ethereum", DEFAULT_PRIVATE_KEY_FILE)
-        
+
         # Configure agent
         self.set_config(
             f"vendor.{AUTHOR}.skills.trader_abci.models.params.args.setup.all_participants",
             json.dumps([self.eth_address]),
             "list",
-        )        
+        )
         self.set_config("vendor.valory.connections.abci.config.host", ANY_ADDRESS)
         self.set_config("vendor.valory.connections.abci.config.port", self.abci_port)
-        
+
         # Start agent
         self.invoke("issue-certificates")
         process = self.run_agent()
@@ -147,11 +128,10 @@ class TestWebsocketIntegration(AEATestCaseMany, UseTendermint):
         try:
             logging.debug("Setting up test agent...")
             process = await self.setup_agent()
-            
-            # Use the working pattern from test_agent.py
+
             assert not self.missing_from_output(
                 process, ("UI behaviours",), timeout=30, is_terminating=False
-            ), "UI Handler not loaded within timeout!" 
+            ), "UI Handler not loaded within timeout!"
 
             # Attempt to connect to the websocket
             logging.debug("Connecting to WebSocket on ws://localhost:%s/ws", WS_PORT)
@@ -169,77 +149,38 @@ class TestWebsocketIntegration(AEATestCaseMany, UseTendermint):
                 logging.debug("Sending test message: %s", test_message)
                 await websocket.send(json.dumps(test_message))
 
-                message_received = False
+                # Wait for Pong response
                 start_time = asyncio.get_event_loop().time()
-
                 while (asyncio.get_event_loop().time() - start_time) < 10:
-                    try:
-                        # Wait for next incoming message
-                        response = await asyncio.wait_for(websocket.recv(), timeout=2)
-                        logging.debug("Received response: %s", response)
-
-                        # Check if response is the Pong
-                        if "Pong" in response:
-                            message_received = True
-                            # Right after receiving Pong, check if connection is still open
-                            logging.debug(
-                                "Pong received. WebSocket state: %s, close_code: %s",
-                                websocket.state,
-                                websocket.close_code
-                            )
-                            break
-                    except asyncio.TimeoutError:
-                        logging.debug("Timeout waiting for 'test' response; retrying...")
-                        continue
-                    except Exception as e:
-                        logging.error("Error processing 'test' message: %s", e, exc_info=True)
-                        continue
-
-                if not message_received:
+                    response = await asyncio.wait_for(websocket.recv(), timeout=2)
+                    logging.debug("Received response: %s", response)
+                    if "Pong" in response:
+                        break
+                else:
                     pytest.fail("No valid Pong response received within timeout")
 
-                # If the server has already started closing (or fully closed),
-                # log a warning here so we know it happened before sending agent-info.
+                # Verify connection is still open before proceeding
                 if websocket.closed:
-                    logging.warning(
-                        "WebSocket is closed (state=%s, close_code=%s) before sending 'agent-info'.",
-                        websocket.state,
-                        websocket.close_code
-                    )
                     pytest.fail("WebSocket closed unexpectedly after Pong")
 
-                # 2. Test agent info request
+                # 2. Test agent info request (only after successful Pong)
                 agent_info_request = {"type": "agent-info"}
                 logging.debug("Sending agent-info request: %s", agent_info_request)
                 await websocket.send(json.dumps(agent_info_request))
 
-                info_received = False
                 start_time = asyncio.get_event_loop().time()
-
                 while (asyncio.get_event_loop().time() - start_time) < 10:
+                    response = await asyncio.wait_for(websocket.recv(), timeout=20)
+                    logging.debug("Received agent-info response: %s", response)
+                    
                     try:
-                        response = await asyncio.wait_for(websocket.recv(), timeout=2)
-                        logging.debug("Received agent-info response: %s", response)
-
-                        try:
-                            data = json.loads(response)
-                            if isinstance(data, dict):
-                                # Check for expected keys
-                                if "agent-address" in data:
-                                    assert "agent-status" in data
-                                    info_received = True
-                                    break
-                        except json.JSONDecodeError as jde:
-                            logging.error("JSON decode error: %s. Skipping...", jde)
-                            continue
-                    except asyncio.TimeoutError:
-                        logging.debug("Timeout waiting for 'agent-info' response; retrying...")
+                        data = json.loads(response)
+                        if isinstance(data, dict) and "agent-address" in data:
+                            assert "agent-status" in data
+                            break
+                    except json.JSONDecodeError:
                         continue
-                    except Exception as e:
-                        logging.error("Error processing agent-info: %s", e, exc_info=True)
-                        continue
-
-                if not info_received:
+                else:
                     pytest.fail("No valid agent-info response received within timeout")
 
         finally:
@@ -251,4 +192,4 @@ class TestWebsocketIntegration(AEATestCaseMany, UseTendermint):
                         self.terminate_agents(timeout=TERMINATION_TIMEOUT) is None
                     ), f"Failed to terminate agents within timeout for {AUTHOR}/{AGENT_NAME}"
                 except Exception as e:
-                    logging.error("Error during agent termination: %s", e, exc_info=True) 
+                    logging.error("Error during agent termination: %s", e, exc_info=True)
