@@ -327,7 +327,7 @@ class UserInterfaceWsHandler(UserInterfaceHttpHandler):
         for handler_func in self.strategy.handlers:
             response_data = handler_func.handle(message)
             if response_data is not None:
-                self.context.logger.info("Handling message in skill: {message.data}")
+                self.context.logger.info(f"Handling message in skill: {message.data}")
                 response_message = dialogue.reply(
                     performative=WebsocketsMessage.Performative.SEND,
                     target_message=dialogue.last_message,

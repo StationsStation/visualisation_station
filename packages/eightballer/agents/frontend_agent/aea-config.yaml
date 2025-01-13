@@ -39,8 +39,8 @@ protocols:
 - valory/ledger_api:1.0.0:bafybeihdk6psr4guxmbcrc26jr2cbgzpd5aljkqvpwo64bvaz7tdti2oni
 - valory/tendermint:0.1.0:bafybeig4mi3vmlv5zpbjbfuzcgida6j5f2nhrpedxicmrrfjweqc5r7cra
 skills:
-- eightballer/trader_abci:0.1.0:bafybeibnynvdio3bu5filzpaijzarwxgf45cxgdaocfkoy6oxkjmjom3oi
-- eightballer/ui_loader_abci:0.1.0:bafybeiezgcmht5lddmaec7m2ykvbg5vuv2cpfaypygonfrzvcntxu44c54
+- eightballer/trader_abci:0.1.0:bafybeidqtqrav6flvtxovv4oz2kj5vw5oucyr3vzj2foy3qmajolhcug24
+- eightballer/ui_loader_abci:0.1.0:bafybeih5vmelzo6nnqifbrlsmfjuhj7ern7s562lx7f4wunaiifjl5nhrq
 - valory/abstract_abci:0.1.0:bafybeihu2bcgjk2tqjiq2zhk3uogtfszqn4osvdt7ho3fubdpdj4jgdfjm
 - valory/abstract_round_abci:0.1.0:bafybeibovsktd3uxur45nrcomq5shcn46cgxd5idmhxbmjhg32c5abyqim
 - valory/registration_abci:0.1.0:bafybeicnth5q4httefsusywx3zrrq4al47owvge72dqf2fziruicq6hqta
