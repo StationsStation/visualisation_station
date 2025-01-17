@@ -7,10 +7,13 @@ from typing import Generator
 
 import docker
 import pytest
+import yaml
+from aea.configurations.base import ComponentType, PublicId
 from aea.configurations.constants import (
     DEFAULT_PRIVATE_KEY_FILE,
     LAUNCH_SUCCEED_MESSAGE,
 )
+from aea.configurations.loader import load_component_configuration
 from aea.test_tools.test_cases import AEATestCaseMany
 from aea_test_autonomy.configurations import ANY_ADDRESS
 from aea_test_autonomy.docker.base import launch_image
@@ -33,12 +36,6 @@ AGENT_NAME = "frontend_agent"
 AUTHOR = "eightballer"
 VERSION = "0.1.0"
 
-CUSTOM_COMPONENTS = [
-    ("eightballer", "simple_html", "HttpHandler"),
-    ("eightballer", "simple_react", "HttpHandler"),
-    ("asiyaasha", "simple_svelte", "PingPongHandler"),
-]
-
 
 @pytest.fixture(scope="function")
 def tendermint_function(
@@ -54,7 +51,7 @@ def tendermint_function(
 
 
 @pytest.mark.usefixtures(
-    "tendermint function", "tendermint_port", "abci_host", "abci_port"
+    "tendermint_function", "tendermint_port", "abci_host", "abci_port"
 )
 class TestAgentLaunch(AEATestCaseMany, UseTendermint):
     """Test that the Agent launches."""
@@ -64,8 +61,32 @@ class TestAgentLaunch(AEATestCaseMany, UseTendermint):
     cli_log_options = ["-v", "DEBUG"]
     package_registry_src_rel = Path(__file__).parent.parent.parent.parent.parent
 
-    @pytest.mark.parametrize("author,component,class_name", CUSTOM_COMPONENTS)
-    def test_run(self, author: str, component: str, class_name: str) -> None:
+    @staticmethod
+    def load_custom_components():
+        config_path = Path(__file__).parent.parent / "aea-config.yaml"
+        with open(config_path, "r", encoding=DEFAULT_ENCODING) as f:
+            configs = list(yaml.safe_load_all(f))
+            main_config = configs[0]
+
+            components = []
+            for custom_id in main_config.get("customs", []):
+                public_id = PublicId.from_str(custom_id)
+
+                component_config = load_component_configuration(
+                    ComponentType.CUSTOM,
+                    Path(__file__).parent.parent.parent.parent.parent
+                    / public_id.author
+                    / "customs"
+                    / public_id.name,
+                )
+
+                handler_class = component_config.json["handlers"][0]["class_name"]
+                components.append((public_id.author, public_id.name, handler_class))
+
+            return components
+
+    @pytest.mark.parametrize("author,component,handler_class", load_custom_components())
+    def test_run(self, author: str, component: str, handler_class: str) -> None:
         """Run the ABCI skill with different custom components."""
         agent_name = f"base_{author}_{component}"
         self.fetch_agent(
@@ -107,7 +128,7 @@ class TestAgentLaunch(AEATestCaseMany, UseTendermint):
         is_running = self.is_running(process)
         assert is_running, f"AEA not running within timeout for {author}/{component}!"
 
-        expected_message = f"Handler {class_name} loaded."
+        expected_message = f"Handler {handler_class} loaded."
         assert not self.missing_from_output(
             process,
             [expected_message],
