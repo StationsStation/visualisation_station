@@ -53,6 +53,12 @@ from packages.valory.skills.abstract_round_abci.behaviours import (
 )
 
 DEFAULT_FRONTEND_DIR = "frontend"
+PROTOCOL_HTTP = "eightballer/http:0.1.0"
+PROTOCOL_WS = "eightballer/websockets:0.1.0"
+PROTOCOL_HANDLER_MAP = {
+    PROTOCOL_HTTP: "http_handlers",
+    PROTOCOL_WS: "ws_handlers"
+}
 
 
 def dynamic_import(component_name, module_name):
@@ -280,15 +286,22 @@ class SetupBehaviour(ComponentLoadingBaseBehaviour):
         configs = config["handlers"]
         module = dynamic_import(component_name, "handlers")
 
+        # http handlers
         for handler_config in configs:
             class_name = handler_config["class_name"]
             handler_kwargs = handler_config.get("kwargs", {})
-            handler = getattr(module, class_name)
-            handler = handler(
+            handler_class = getattr(module, class_name)
+            handler = handler_class(
                 name=class_name, skill_context=self.context, **handler_kwargs
             )
-            self.context.user_interface_client_strategy.handlers.append(handler)
-            self.context.logger.info(f"Handler {class_name} loaded.")
+
+            protocol = getattr(handler_class, "SUPPORTED_PROTOCOL", None)
+            if str(protocol) in PROTOCOL_HANDLER_MAP:
+                handler_list = getattr(self.context.user_interface_client_strategy, PROTOCOL_HANDLER_MAP[str(protocol)])
+                handler_list.append(handler)
+                self.context.logger.info(f"{str(protocol)} Handler {class_name} loaded.")
+            else:
+                self.context.logger.warning(f"Unsupported protocol {str(protocol)} for handler {class_name}")
 
             handler_methods = [
                 method

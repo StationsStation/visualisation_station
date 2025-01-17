@@ -146,7 +146,7 @@ class UserInterfaceHttpHandler(BaseHandler):
 
         parts = message.url.split("/")
 
-        for handler in self.strategy.handlers:
+        for handler in self.strategy.http_handlers:
             result = handler.handle(message)
             self.context.logger.debug(f"Received result: {result}")
             if result is not None:
@@ -324,7 +324,7 @@ class UserInterfaceWsHandler(UserInterfaceHttpHandler):
         # we here need to basically literate all of the handlers from the custom component
         # and then call the handle method on them.
 
-        for handler_func in self.strategy.handlers:
+        for handler_func in self.strategy.ws_handlers:
             response_data = handler_func.handle(message)
             if response_data is not None:
                 self.context.logger.info(f"Handling message in skill: {message.data}")

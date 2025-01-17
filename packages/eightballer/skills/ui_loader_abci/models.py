@@ -51,7 +51,8 @@ class UserInterfaceClientStrategy(Model):
     """This class represents a user interface client strategy."""
 
     clients: dict[str, dict] = {}
-    handlers: list = []
+    http_handlers: list = []
+    ws_handlers: list = []
     behaviours: list = []
     routes: dict = {}
 
