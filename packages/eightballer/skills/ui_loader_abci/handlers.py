@@ -146,21 +146,6 @@ class UserInterfaceHttpHandler(BaseHandler):
 
         parts = message.url.split("/")
 
-        for handler in self.strategy.handlers:
-            result = handler.handle(message)
-            self.context.logger.debug(f"Received result: {result}")
-            if result is not None:
-                headers = CONTENT_TYPE_JSON
-                content = result.body
-                return UiHttpMessage(
-                    performative=UiHttpMessage.Performative.RESPONSE,
-                    status_code=result.status_code,
-                    status_text=result.status_text,
-                    headers=headers,
-                    version=message.version,
-                    body=content,
-                )
-
         if parts[-1] == "agent-info":
             data = {
                 "service-id": self.context.params.on_chain_service_id,
@@ -180,12 +165,24 @@ class UserInterfaceHttpHandler(BaseHandler):
                 body=content,
             )
 
-        headers = CONTENT_TYPE_JSON
+        for handler in self.strategy.handlers:
+            result = handler.handle(message)
+            self.context.logger.debug(f"Received result: {result}")
+            if result is not None:
+                return UiHttpMessage(
+                    performative=UiHttpMessage.Performative.RESPONSE,
+                    status_code=result.status_code,
+                    status_text=result.status_text,
+                    headers=CONTENT_TYPE_JSON,
+                    version=message.version,
+                    body=result.body,
+                )
+
         content = json.dumps(ERROR_RESPONSE).encode(DEFAULT_ENCODING)
         return UiHttpMessage(
             performative=UiHttpMessage.Performative.RESPONSE,
             status_code=404,
-            headers=headers,
+            headers=CONTENT_TYPE_JSON,
             version=message.version,
             status_text="Not Found",
             body=content,
