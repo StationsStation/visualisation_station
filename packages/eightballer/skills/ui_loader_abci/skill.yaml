@@ -31,7 +31,7 @@ protocols:
 - eightballer/http:0.1.0:bafybeieoom2ajzvurwsjbivx23dwilarfzkihgqpgqp43ypowpr5xdyjr4
 - eightballer/websockets:0.1.0:bafybeihoiyzxc3ikhgty54snlu7djyn34dcqcuqppnf5zajuabc4ecgxwm
 skills:
-- valory/abstract_round_abci:0.1.0:bafybeibovsktd3uxur45nrcomq5shcn46cgxd5idmhxbmjhg32c5abyqim
+- valory/abstract_round_abci:0.1.0:bafybeig4wczuh3l6wbxb47rgsmodlfupichj66gfcwkvy65q5pbm3utykm
 behaviours:
   main:
     args: {}
