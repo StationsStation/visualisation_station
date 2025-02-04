@@ -5,6 +5,7 @@ description = ""
 authors = ["eightballer"]
 readme = "README.md"
 license = "Apache-2.0"
+package-mode = false 
 classifiers = [
     'License :: OSI Approved :: Apache Software License',
     'Natural Language :: English',
@@ -19,15 +20,15 @@ classifiers = [
 [tool.poetry.dependencies]
 python = "<3.12,>=3.11"
 cython = "<3.0.0"
-open-aea-ledger-solana = "==1.55.0"
-open-aea-ledger-cosmos = "==1.55.0"
-open-aea-ledger-ethereum = "==1.55.0"
-open-aea-cli-ipfs = "==1.55.0"
-open-aea-test-autonomy = "==0.15.2"
-open-autonomy = "==0.15.2"
-autonomy-dev = {version = "==0.2.72", extras = ["all"]}
+open-aea-ledger-solana = "1.62.0"
+open-aea-ledger-cosmos = "1.62.0"
+open-aea-ledger-ethereum = "1.62.0"
+open-aea-cli-ipfs = "1.62.0"
+open-aea-test-autonomy = "0.19.0"
+open-autonomy = "0.19.0"
+autonomy-dev = {version = "0.2.99", extras = ["all"]}
 pytz = "==2022.2.1"
-open-aea = "==1.55.0"
+open-aea = "1.62.0"
 openapi-core = "==0.14.5"
 python-socketio = ">=5.9.0"
 redis = "^5.0.8"
