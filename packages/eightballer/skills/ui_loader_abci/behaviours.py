@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 # ------------------------------------------------------------------------------
 #
 #   Copyright 2024 Valory AG
@@ -19,38 +18,40 @@
 
 """This package contains round behaviours of ComponentLoadingAbciApp."""
 
-import importlib
 import sys
-import threading
 import time
+import importlib
+import threading
 from abc import ABC
 from enum import Enum
 from glob import glob
+from typing import Any, cast
 from pathlib import Path
-from typing import Any, Generator, Optional, Set, Type, cast
+from collections.abc import Generator
 
 import yaml
 
+from packages.valory.skills.abstract_round_abci.base import AbstractRound
 from packages.eightballer.skills.ui_loader_abci.models import (
     Params,
     UserInterfaceClientStrategy,
 )
 from packages.eightballer.skills.ui_loader_abci.rounds import (
-    ComponentLoadingAbciApp,
-    ErrorPayload,
-    ErrorRound,
     Event,
-    HealthcheckPayload,
-    HealthcheckRound,
-    SetupPayload,
+    ErrorRound,
     SetupRound,
+    ErrorPayload,
+    SetupPayload,
+    HealthcheckRound,
     SynchronizedData,
+    HealthcheckPayload,
+    ComponentLoadingAbciApp,
 )
-from packages.valory.skills.abstract_round_abci.base import AbstractRound
 from packages.valory.skills.abstract_round_abci.behaviours import (
-    AbstractRoundBehaviour,
     BaseBehaviour,
+    AbstractRoundBehaviour,
 )
+
 
 DEFAULT_FRONTEND_DIR = "frontend"
 
@@ -58,8 +59,7 @@ DEFAULT_FRONTEND_DIR = "frontend"
 def dynamic_import(component_name, module_name):
     """Dynamically import a module."""
     module = importlib.import_module(component_name)
-    sub_module = getattr(module, module_name)
-    return sub_module
+    return getattr(module, module_name)
 
 
 class HttpStatus(Enum):
@@ -87,7 +87,7 @@ class ComponentLoadingBaseBehaviour(BaseBehaviour, ABC):
 class ErrorBehaviour(ComponentLoadingBaseBehaviour):
     """ErrorBehaviour."""
 
-    matching_round: Type[AbstractRound] = ErrorRound
+    matching_round: type[AbstractRound] = ErrorRound
 
     def async_act(self) -> Generator:
         """Do the act, supporting asynchronous execution."""
@@ -118,7 +118,7 @@ class ErrorBehaviour(ComponentLoadingBaseBehaviour):
 class HealthcheckBehaviour(ComponentLoadingBaseBehaviour):
     """HealthcheckBehaviour."""
 
-    matching_round: Type[AbstractRound] = HealthcheckRound
+    matching_round: type[AbstractRound] = HealthcheckRound
 
     def async_act(self) -> Generator:
         """Do the act, supporting asynchronous execution."""
@@ -144,14 +144,12 @@ class HealthcheckBehaviour(ComponentLoadingBaseBehaviour):
 class SetupBehaviour(ComponentLoadingBaseBehaviour):
     """SetupBehaviour."""
 
-    matching_round: Type[AbstractRound] = SetupRound
+    matching_round: type[AbstractRound] = SetupRound
 
     @property
-    def strategy(self) -> Optional[str]:
+    def strategy(self) -> str | None:
         """Get the strategy."""
-        return cast(
-            UserInterfaceClientStrategy, self.context.user_interface_client_strategy
-        )
+        return cast(UserInterfaceClientStrategy, self.context.user_interface_client_strategy)
 
     def async_act(self) -> Generator:
         """Do the act, supporting asynchronous execution."""
@@ -165,15 +163,11 @@ class SetupBehaviour(ComponentLoadingBaseBehaviour):
                 self.context.logger.info(f"Loading User Interface: {component_name}")
                 ui_setup_ok = yield from self.load_ui(directory)
                 if config.get("behaviours", False):
-                    ui_behaviours_ok = yield from self.load_behaviours(
-                        author, component_name, directory, config
-                    )
+                    ui_behaviours_ok = yield from self.load_behaviours(author, component_name, directory, config)
                 else:
                     ui_behaviours_ok = Event.DONE
                 if config.get("handlers", False):
-                    ui_handlers_ok = yield from self.load_handlers(
-                        author, component_name, directory, config
-                    )
+                    ui_handlers_ok = yield from self.load_handlers(author, component_name, directory, config)
                 else:
                     ui_handlers_ok = Event.DONE
 
@@ -204,23 +198,15 @@ class SetupBehaviour(ComponentLoadingBaseBehaviour):
         """Load the UI from the setup_data."""
         self.context.logger.info(f"Generating routes for the UI in {directory}...")
         self.strategy.routes = self.generate_routes(directory)
-        self.context.logger.info(
-            f"Routes generated: {len(self.strategy.routes)} routes."
-        )
-        sys.path += [
-            str(
-                Path(__file__).resolve().parent.parent.parent.parent.parent
-                / directory.parent
-            )
-        ]
+        self.context.logger.info(f"Routes generated: {len(self.strategy.routes)} routes.")
+        sys.path += [str(Path(__file__).resolve().parent.parent.parent.parent.parent / directory.parent)]
         self.context.logger.info(f"Added {directory} to the path.")
         if not self.strategy.routes:
             yield Event.ERROR
         yield Event.DONE
 
     def generate_routes(self, directory) -> dict:
-        """
-        We generate a mapping of routes based on all the files found in the frontend directory.
+        """We generate a mapping of routes based on all the files found in the frontend directory.
         We read the files into memory and store them in the routes dict.
         """
         routes = {}
@@ -241,9 +227,7 @@ class SetupBehaviour(ComponentLoadingBaseBehaviour):
 
     def load_behaviours(self, author, component_name, directory, config) -> bool:
         """Load in the behaviours for the ComponentLoadingRoundBehaviour."""
-        self.context.logger.info(
-            f"Loading behaviours for Author: {author} Component: {component_name} in {directory}"
-        )
+        self.context.logger.info(f"Loading behaviours for Author: {author} Component: {component_name} in {directory}")
 
         def behaviour_runner(behaviour, interval=1):
             # We need to convert this into a Task to executed by the task runner.
@@ -268,14 +252,10 @@ class SetupBehaviour(ComponentLoadingBaseBehaviour):
         self.context.logger.info(f"Behaviour {behaviour} started.")
         yield Event.DONE
 
-    def load_handlers(
-        self, author, component_name, directory, config
-    ) -> Generator[Any, Any, None]:
+    def load_handlers(self, author, component_name, directory, config) -> Generator[Any, Any, None]:
         """Load in the handlers for the ComponentLoadingRoundBehaviour."""
 
-        self.context.logger.info(
-            f"Loading handlers for Author: {author}, Component: {component_name} from {directory}"
-        )
+        self.context.logger.info(f"Loading handlers for Author: {author}, Component: {component_name} from {directory}")
 
         configs = config["handlers"]
         module = dynamic_import(component_name, "handlers")
@@ -284,21 +264,15 @@ class SetupBehaviour(ComponentLoadingBaseBehaviour):
             class_name = handler_config["class_name"]
             handler_kwargs = handler_config.get("kwargs", {})
             handler = getattr(module, class_name)
-            handler = handler(
-                name=class_name, skill_context=self.context, **handler_kwargs
-            )
+            handler = handler(name=class_name, skill_context=self.context, **handler_kwargs)
             self.context.user_interface_client_strategy.handlers.append(handler)
             self.context.logger.info(f"Handler {class_name} loaded.")
 
             handler_methods = [
-                method
-                for method in dir(handler)
-                if callable(getattr(handler, method)) and not method.startswith("__")
+                method for method in dir(handler) if callable(getattr(handler, method)) and not method.startswith("__")
             ]
 
-            self.context.logger.info(
-                f"Methods found in {class_name}: {', '.join(handler_methods)}"
-            )
+            self.context.logger.info(f"Methods found in {class_name}: {', '.join(handler_methods)}")
         yield Event.DONE
 
 
@@ -307,7 +281,7 @@ class ComponentLoadingRoundBehaviour(AbstractRoundBehaviour):
 
     initial_behaviour_cls = SetupBehaviour
     abci_app_cls = ComponentLoadingAbciApp  # type: ignore
-    behaviours: Set[Type[BaseBehaviour]] = [
+    behaviours: set[type[BaseBehaviour]] = [
         ErrorBehaviour,
         HealthcheckBehaviour,
         SetupBehaviour,

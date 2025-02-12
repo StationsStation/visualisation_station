@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 # ------------------------------------------------------------------------------
 #
 #   Copyright 2024 Valory AG
@@ -20,26 +19,25 @@
 """This package contains the rounds of ComponentLoadingAbciApp."""
 
 from enum import Enum
-from typing import Dict, FrozenSet, Optional, Set, Tuple
 
-from packages.eightballer.skills.ui_loader_abci.payloads import (
-    ErrorPayload,
-    HealthcheckPayload,
-    SetupPayload,
-)
 from packages.valory.skills.abstract_round_abci.base import (
     AbciApp,
-    AbciAppTransitionFunction,
     AppState,
-    BaseSynchronizedData,
-    CollectSameUntilThresholdRound,
-    DegenerateRound,
     EventToTimeout,
+    DegenerateRound,
+    BaseSynchronizedData,
+    AbciAppTransitionFunction,
+    CollectSameUntilThresholdRound,
+)
+from packages.eightballer.skills.ui_loader_abci.payloads import (
+    ErrorPayload,
+    SetupPayload,
+    HealthcheckPayload,
 )
 
 
 class Event(Enum):
-    """ComponentLoadingAbciApp Events"""
+    """ComponentLoadingAbciApp Events."""
 
     DONE = "done"
     ERROR = "error"
@@ -47,36 +45,35 @@ class Event(Enum):
 
 
 class SynchronizedData(BaseSynchronizedData):
-    """
-    Class to represent the synchronized data.
+    """Class to represent the synchronized data.
 
     This data is replicated by the tendermint application.
     """
 
     @property
-    def error_data(self) -> Optional[ErrorPayload]:
+    def error_data(self) -> ErrorPayload | None:
         """Return the error data."""
         return str(self.db.get_strict("error_data"))
 
     @property
-    def setup_data(self) -> Optional[SetupPayload]:
+    def setup_data(self) -> SetupPayload | None:
         """Return the setup data."""
         return str(self.db.get_strict("setup_data"))
 
     @property
-    def healthcheck_data(self) -> Optional[HealthcheckPayload]:
+    def healthcheck_data(self) -> HealthcheckPayload | None:
         """Return the healthcheck data."""
         return str(self.db.get_strict("healthcheck_data"))
 
 
 class BaseRound(CollectSameUntilThresholdRound):
-    """BaseRound"""
+    """BaseRound."""
 
     payload_class = None
     payload_attribute = None
     synchronized_data_class = SynchronizedData
 
-    def end_block(self) -> Optional[Tuple[BaseSynchronizedData, Enum]]:
+    def end_block(self) -> tuple[BaseSynchronizedData, Enum] | None:
         """Process the end of the block."""
 
         if not self.threshold_reached:
@@ -89,7 +86,7 @@ class BaseRound(CollectSameUntilThresholdRound):
 
 
 class ErrorRound(BaseRound):
-    """ErrorRound"""
+    """ErrorRound."""
 
     payload_class = ErrorPayload
     payload_attribute = "error_data"
@@ -97,7 +94,7 @@ class ErrorRound(BaseRound):
 
 
 class HealthcheckRound(BaseRound):
-    """HealthcheckRound"""
+    """HealthcheckRound."""
 
     payload_class = HealthcheckPayload
     synchronized_data_class = SynchronizedData
@@ -105,7 +102,7 @@ class HealthcheckRound(BaseRound):
 
 
 class SetupRound(BaseRound):
-    """SetupRound"""
+    """SetupRound."""
 
     payload_class = SetupPayload
     synchronized_data_class = SynchronizedData
@@ -113,27 +110,27 @@ class SetupRound(BaseRound):
 
 
 class DoneRound(DegenerateRound):
-    """DoneRound"""
+    """DoneRound."""
 
 
 class ComponentLoadingAbciApp(AbciApp[Event]):
-    """ComponentLoadingAbciApp"""
+    """ComponentLoadingAbciApp."""
 
     initial_round_cls: AppState = SetupRound
-    initial_states: Set[AppState] = {HealthcheckRound, SetupRound}
+    initial_states: set[AppState] = {HealthcheckRound, SetupRound}
     transition_function: AbciAppTransitionFunction = {
         SetupRound: {Event.DONE: HealthcheckRound, Event.ERROR: ErrorRound},
         HealthcheckRound: {Event.DONE: DoneRound, Event.ERROR: ErrorRound},
         ErrorRound: {Event.DONE: SetupRound},
         DoneRound: {},
     }
-    final_states: Set[AppState] = {DoneRound}
+    final_states: set[AppState] = {DoneRound}
     event_to_timeout: EventToTimeout = {}
-    cross_period_persisted_keys: FrozenSet[str] = frozenset()
-    db_pre_conditions: Dict[AppState, Set[str]] = {
-        HealthcheckRound: set([]),
-        SetupRound: set([]),
+    cross_period_persisted_keys: frozenset[str] = frozenset()
+    db_pre_conditions: dict[AppState, set[str]] = {
+        HealthcheckRound: set(),
+        SetupRound: set(),
     }
-    db_post_conditions: Dict[AppState, Set[str]] = {
-        DoneRound: set([]),
+    db_post_conditions: dict[AppState, set[str]] = {
+        DoneRound: set(),
     }

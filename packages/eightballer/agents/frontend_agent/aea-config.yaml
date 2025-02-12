@@ -9,25 +9,25 @@ description: Enables augmentation of the agents using a meta-framework for the c
   the OLAS ecosystem. Includes a template for HTML, and React custom components.
 aea_version: '>=1.0.0, <2.0.0'
 fingerprint:
-  tests/__init__.py: bafybeihzyvuskw7vsf6drqqpg7sbttzqruhhl5vvjmbruidmx53nvm4ndq
-  tests/test_agent.py: bafybeiajyd4g4l6dugjrqral7g2amyxurcjibfhtvloyi4ys5kygscptjm
-  tests/test_websockets.py: bafybeiek2wviddmh2eifp75xttc7mxx3kkvbvkxj5jj73sruj3x6cuonjy
+  tests/__init__.py: bafybeibsqjhfn7hkjhqs7aec5m35ukfhptoujxz3i6wzzs6xboz4uzab6q
+  tests/test_agent.py: bafybeiedr6ks7mms3eloisdq5f4uqgftwyvd5f5qlsios3dz4cpw7esahy
+  tests/test_websockets.py: bafybeiffb4tzaten3jub7vsvcgnkfijankevdutknjmblx5gi7jj4gkmne
 fingerprint_ignore_patterns: []
 connections:
 - eightballer/http_client:0.1.0:bafybeidxqvcgobltkb5rgokakcfo25ntfhlffmpzqap6oid4ttmwbvn4qi
 - eightballer/http_server:0.1.0:bafybeid7u7cx2smnb3iz6zs6gt3k4ijwevm6yqqfo4pmziqoubl2p52ele
 - eightballer/websocket_server:0.1.0:bafybeicjga2qjroxogl7eptogmocfcwpqkfppxml3rad6xoc6e7hrfhzaq
-- valory/abci:0.1.0:bafybeidiwux3jrlkaemob55ojxgvpzrmyzyq5dld6phzb6bandgrquc7zu
+- valory/abci:0.1.0:bafybeifu42n4vz3bid3nkbr7sea6d3pfmxx7rzctr37ovafmbpyq6vplkm
 - valory/http_client:0.23.0:bafybeid5ffvg76ejjoese7brj5ji3lx66cu7p2ixfwflpo6rgofkypfd7y
-- valory/ipfs:0.1.0:bafybeid5fdr6ufha3axnktfofsc2hxha3jatnoi7st3pccorf7sztfpaky
+- valory/ipfs:0.1.0:bafybeigjspoceazd5roxo4pcqcgyu3ozixkdoc44domwcaumt2zwoz2x3m
 - valory/ledger:0.19.0:bafybeibiayfscw4badpr545f47hsvc2r5lgfpgzib5q4h4u6kkosdsytby
 - valory/p2p_libp2p_client:0.1.0:bafybeic6ayusdwy4dks75njwk32ac7ur7salgllwf4fdc34ue5z2k5iz4q
 contracts:
 - valory/agent_registry:0.1.0:bafybeignghdk7oqvyg722gz66tbuj2vj4vkatguj4b6lf5fqzqxkktcke4
 - valory/erc20:0.1.0:bafybeib7ctk3deleyxayrqvropewefr2muj4kcqe3t3wscak25bjmxnqwe
-- valory/gnosis_safe:0.1.0:bafybeialsnaekbdtn3h6phjs5xxx44es56jffs5jnlkkcgc62k62vxpkxm
-- valory/gnosis_safe_proxy_factory:0.1.0:bafybeic3ozple3xqw556esxx7l3dsgm3om7kitozjar5id4ryw6zptllfi
-- valory/service_registry:0.1.0:bafybeid4kiq2fwospfod4buof2fwwz3gk36jiyqkfjyg2xx346ad5zt72y
+- valory/gnosis_safe:0.1.0:bafybeidw3uxuxyp3lso5mh43nhauzvra4jabnuk34bkqd6mrv4ojz37nui
+- valory/gnosis_safe_proxy_factory:0.1.0:bafybeihx4j2k4gwst4qswkgqlcsr3zmplroc7zjwuqo3ttngjq3fwyumpu
+- valory/service_registry:0.1.0:bafybeibuq4p66jdpnrq7viz4zylydu3zneteukfy3gwdgp273vptnq3dvi
 protocols:
 - eightballer/http:0.1.0:bafybeieoom2ajzvurwsjbivx23dwilarfzkihgqpgqp43ypowpr5xdyjr4
 - eightballer/websockets:0.1.0:bafybeihoiyzxc3ikhgty54snlu7djyn34dcqcuqppnf5zajuabc4ecgxwm
@@ -40,16 +40,16 @@ protocols:
 - valory/ledger_api:1.0.0:bafybeihmqzcbj6t7vxz2aehd5726ofnzsfjs5cwlf42ro4tn6i34cbfrc4
 - valory/tendermint:0.1.0:bafybeigydrbfrlmr4f7shbtqx44kvmbg22im27mxdap2e3m5tkti6t445y
 skills:
-- eightballer/trader_abci:0.1.0:bafybeigiiyeporx4mifqusrfmo6qeqsmjxsfvwm3ikbu4cehtompqeix2m
-- eightballer/ui_loader_abci:0.1.0:bafybeiazlihbkcylyfbuyx555oxulapspwxicp4qg2srgn7x4wketj5muq
-- valory/abstract_abci:0.1.0:bafybeifuzjuq5af36e5gg2fpnxxf7xoqq5oqhqk76sgi3uewtcxkpyn2m4
-- valory/abstract_round_abci:0.1.0:bafybeig4wczuh3l6wbxb47rgsmodlfupichj66gfcwkvy65q5pbm3utykm
-- valory/registration_abci:0.1.0:bafybeicfrgzo3tbcr6lijd5vsrjrggsehobr7xv2m74jkx6h3k6lxhqgqu
-- valory/reset_pause_abci:0.1.0:bafybeidlzt3jvgokzwpfxbcnpnxmfedcchscxq3crfaceldy4jamu65ave
+- eightballer/trader_abci:0.1.0:bafybeihj5ca4z4uf34cq45fhrh4yji5tv5g5k76p7qnccvhl7p35ahymgm
+- eightballer/ui_loader_abci:0.1.0:bafybeiep5svpuqrd67zqcowevvg55q7l4mctjmbopafvn5gxf5p2dll3oa
+- valory/abstract_abci:0.1.0:bafybeifv2dynqo3o57nr6jntsvdkduytz3f6i52csv2bjwrr4qhi4mkm7i
+- valory/abstract_round_abci:0.1.0:bafybeiba3zhx5drsf7ailfboeuvwykocmkffs2j426u4q7d4erig67lyhm
+- valory/registration_abci:0.1.0:bafybeigp2g6uhhgjlkqyhjlk4abfjuecmulnwlki6acbpfu45thslqujlu
+- valory/reset_pause_abci:0.1.0:bafybeidhqvc4cl6alvkql5kadiv7snudl7o2ctfqbmhrihtejm3zhkmbby
 customs:
-- eightballer/simple_html:0.1.0:bafybeig6yg632o4bc2lra5rzzlbjux32caktbvgb5e3fohi5huynyfx44m
-- eightballer/simple_react:0.1.0:bafybeigkrh2k5xlinbb2amkpyxbozy7c6qxqfow27wgmn7i4ltnqqunqc4
-- asiyaasha/simple_svelte:0.1.0:bafybeihz4zqjnsntl4wdfceweiwdoel4dtldeby4ne33xpcfz5og3i2aqm
+- eightballer/simple_html:0.1.0:bafybeid6cbv46ouqaz2wbyurf4a44zudpwmttjledjgx5y7m6izbwnmgq4
+- eightballer/simple_react:0.1.0:bafybeie6fv244pzrm55xc3cghxirg2gckvigcbhxzw3ie45wfeif6byeai
+- asiyaasha/simple_svelte:0.1.0:bafybeicq3sduytiitdks4qncgeri5vbnf44h34emrhyu4fqclwycy5ussu
 default_ledger: ethereum
 required_ledgers:
 - ethereum

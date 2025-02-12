@@ -9,21 +9,21 @@ description: The UI Loader ABCI skill is responsible for loading the UI componen
 license: Apache-2.0
 aea_version: '>=1.0.0, <2.0.0'
 fingerprint:
-  __init__.py: bafybeic6qfeiarqudbrqebdzopx2cxv7ld6gyjszzebq53yeszwhwzyz5u
+  __init__.py: bafybeidyt2ae3clvnz3dtzwfix2rl2sc6gukmjzmjio3nh3n6cdjfcvqxa
   abci_spec.yaml: bafybeig6ffhlqu4w23dwjl7r46hfc63t6vfzr5d7owc2ffcosdrzlfaieu
-  behaviours.py: bafybeigirgf64ktcbtvxnulbjsfp2hqjfbff7lt2rn3iei2bp3idio6gey
-  dialogues.py: bafybeigkx6rok7etuvgl4q4qn3nzlzkm75nisxe3kkldumboj5e2de7qya
-  handlers.py: bafybeiaahxgowwckabhtm3g6ry2lyvncug3j6bqcndhb2cq4fbtvcm6arq
-  models.py: bafybeiaw7da26ix5yuv4dq27jbjwrpyaqsw6xxfb5b6m7mko4hu427l4de
-  payloads.py: bafybeihlb2vwuvpuwrvog2vfyuhzuq7i6ef36epa3im52a3sftlsj4g5qe
-  rounds.py: bafybeifjzofmowtbavb6rnu4v7j5brrgfhgisl6zoinacrxpvclx743qem
-  tests/__init__.py: bafybeiccs7cgyonjxryqymbv5kjkgep7iojx74f27fti6npni3zuxu7esi
-  tests/test_behaviours.py: bafybeifwxr6hzx5wyreubeskmqeuxqj3toqqwx5kedljmxlayx4tx2enia
-  tests/test_dialogues.py: bafybeieb67vvwpslksvuz2sdbftfhfg74cekbqrp7ekjsmwz3wzxf45cjy
-  tests/test_handlers.py: bafybeifqtzxifou3qaihsdi75vkqzfvhgxb6jgurciexb26sqm4ukw4vj4
-  tests/test_models.py: bafybeihxr6qiimkbe66tnnwek46ciejd5usdljwu7rc4decvy6hmtkf3ei
-  tests/test_payloads.py: bafybeieh5tvzzqsem27sbmhledqvehgtzpkeoaxmrmlv2fakk6ps2mwchm
-  tests/test_rounds.py: bafybeihwoojys5ssbrcqtovfirmmjoiih6hbgyx6634rih753dkq5dpu6u
+  behaviours.py: bafybeig5kfr57rbo7wkm5bxj7pdzumx2yklgvso7gmhvdq6kmyq3iekr3i
+  dialogues.py: bafybeifo73xw6p7a6bmcrmbiestgvoh6egbxwch4jt2q5uka6g3ctm3zcu
+  handlers.py: bafybeig5tapki2ycp2lg4rt54js6ltnmfje5l7pbd66yqxnadpkluzmdw4
+  models.py: bafybeiexuaz3dor2dqbtoxwa3xjlazcn6hvyc35a67mzvz2btax5lw6ubi
+  payloads.py: bafybeicf2fhvfdj4rtyc6tob26i4dvpe2ituoljvqi46us2gpypw2f7ftm
+  rounds.py: bafybeidrri2l7ba6xbow6o6lo6dfsbjlbemqdlki3tjckqqteiu5cwmx7i
+  tests/__init__.py: bafybeihv2fxwoukidlayz6ra4git7rjojooxk2grsckxm7vsq2sdmfl7ry
+  tests/test_behaviours.py: bafybeiel4pip7f3srdy2bwibdzunwq4f2mgqixzptecjistsprlecv5ape
+  tests/test_dialogues.py: bafybeihys5temgpdejvkvjplt262ap7qa2dvf6szydkau5sh4lepvdogqm
+  tests/test_handlers.py: bafybeidrqhiuwnkdzljvdz3iwpvjjqaqihyxucidkzzh4gtwidbtc4dt3i
+  tests/test_models.py: bafybeidase2kik4aes3cpsks4h4oyhlcupyvrec67bmp46hlgbwuh7fmoe
+  tests/test_payloads.py: bafybeianuzr5z2j6ltdb7asjcrylp7owyeusnn747mzmqqrgzzt6hyym6y
+  tests/test_rounds.py: bafybeidc7pgglpib465bambnbjdkhoo2sareba2hhtxwat5fkcaydiinpi
 fingerprint_ignore_patterns: []
 connections: []
 contracts: []
@@ -31,7 +31,7 @@ protocols:
 - eightballer/http:0.1.0:bafybeieoom2ajzvurwsjbivx23dwilarfzkihgqpgqp43ypowpr5xdyjr4
 - eightballer/websockets:0.1.0:bafybeihoiyzxc3ikhgty54snlu7djyn34dcqcuqppnf5zajuabc4ecgxwm
 skills:
-- valory/abstract_round_abci:0.1.0:bafybeig4wczuh3l6wbxb47rgsmodlfupichj66gfcwkvy65q5pbm3utykm
+- valory/abstract_round_abci:0.1.0:bafybeiba3zhx5drsf7ailfboeuvwykocmkffs2j426u4q7d4erig67lyhm
 behaviours:
   main:
     args: {}

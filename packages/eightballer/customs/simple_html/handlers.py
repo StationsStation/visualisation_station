@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 # ------------------------------------------------------------------------------
 #
 #   Copyright 2024 eightballer
@@ -19,10 +18,6 @@
 
 """This package contains a scaffold of a handler."""
 
-import datetime
-import json
-from typing import Optional, cast
-
 from aea.skills.base import Handler
 
 from packages.eightballer.protocols.http.message import HttpMessage as UiHttpMessage
@@ -38,7 +33,6 @@ class HttpHandler(Handler):
 
     def teardown(self) -> None:
         """Tear down the handler."""
-        pass
 
     def handle(self, message: UiHttpMessage):
         """Handle the message."""
