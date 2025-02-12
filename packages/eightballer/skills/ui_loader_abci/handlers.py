@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 # ------------------------------------------------------------------------------
 #
 #   Copyright 2024 Valory AG
@@ -20,40 +19,29 @@
 """This module contains the handlers for the skill of ComponentLoadingAbciApp."""
 
 import json
-from typing import Optional, cast
+from typing import cast
 
 from aea.protocols.base import Message
 
 from packages.eightballer.protocols.http.message import HttpMessage as UiHttpMessage
-from packages.eightballer.protocols.websockets.dialogues import (
-    WebsocketsDialogue,
-    WebsocketsDialogues,
-)
 from packages.eightballer.protocols.websockets.message import WebsocketsMessage
 from packages.eightballer.skills.ui_loader_abci.models import (
     UserInterfaceClientStrategy,
 )
-from packages.valory.skills.abstract_round_abci.handlers import (
-    ABCIRoundHandler as BaseABCIRoundHandler,
-)
-from packages.valory.skills.abstract_round_abci.handlers import (
-    ContractApiHandler as BaseContractApiHandler,
+from packages.eightballer.protocols.websockets.dialogues import (
+    WebsocketsDialogue,
+    WebsocketsDialogues,
 )
 from packages.valory.skills.abstract_round_abci.handlers import (
     HttpHandler as BaseHttpHandler,
-)
-from packages.valory.skills.abstract_round_abci.handlers import (
     IpfsHandler as BaseIpfsHandler,
-)
-from packages.valory.skills.abstract_round_abci.handlers import (
-    LedgerApiHandler as BaseLedgerApiHandler,
-)
-from packages.valory.skills.abstract_round_abci.handlers import (
     SigningHandler as BaseSigningHandler,
-)
-from packages.valory.skills.abstract_round_abci.handlers import (
+    ABCIRoundHandler as BaseABCIRoundHandler,
+    LedgerApiHandler as BaseLedgerApiHandler,
     TendermintHandler as BaseTendermintHandler,
+    ContractApiHandler as BaseContractApiHandler,
 )
+
 
 DEFAULT_ENCODING = "utf-8"
 ERROR_RESPONSE = {"error": "Not Found"}
@@ -67,11 +55,9 @@ class BaseHandler(BaseHttpHandler):
     """Base handler for logging."""
 
     @property
-    def strategy(self) -> Optional[str]:
+    def strategy(self) -> str | None:
         """Get the strategy."""
-        return cast(
-            UserInterfaceClientStrategy, self.context.user_interface_client_strategy
-        )
+        return cast(UserInterfaceClientStrategy, self.context.user_interface_client_strategy)
 
     def get_headers(self, original_headers: str) -> str:
         """Appends cors headers."""
@@ -92,9 +78,7 @@ class UserInterfaceHttpHandler(BaseHandler):
         message = cast(UiHttpMessage, message)
         dialogue = self.context.user_interface_http_dialogues.update(message)
         if dialogue is None:
-            self.context.logger.error(
-                f"Could not locate dialogue for message={message}"
-            )
+            self.context.logger.error(f"Could not locate dialogue for message={message}")
             return
         self.handle_http_request(message, dialogue)
 
@@ -106,11 +90,10 @@ class UserInterfaceHttpHandler(BaseHandler):
                 api_response,
                 dialogue,
             )
-        elif self.is_websocket_request(message):
+        if self.is_websocket_request(message):
             return self.handle_websocket_request(message, dialogue)
-        else:
-            headers, content = self.handle_frontend_request(message, dialogue)
-            return self.send_http_response(message, dialogue, headers, content)
+        headers, content = self.handle_frontend_request(message, dialogue)
+        return self.send_http_response(message, dialogue, headers, content)
 
     def is_api_route(self, url: str) -> bool:
         """Check if the url is an api route."""
@@ -122,22 +105,16 @@ class UserInterfaceHttpHandler(BaseHandler):
 
     def is_websocket_request(self, message: UiHttpMessage) -> bool:
         """Check if the request is a websocket request using the headers."""
-        if "Upgrade: websocket" in message.headers:
-            return True
-        return False
+        return "Upgrade: websocket" in message.headers
 
     def handle_websocket_request(self, message: UiHttpMessage, dialogue) -> None:
         """Handle the websocket request."""
-        self.strategy.clients[
-            dialogue.incomplete_dialogue_label.get_incomplete_version().dialogue_reference[
-                0
-            ]
-        ] = dialogue
+        self.strategy.clients[dialogue.incomplete_dialogue_label.get_incomplete_version().dialogue_reference[0]] = (
+            dialogue
+        )
 
         self.context.logger.debug(f"Total clients: {len(self.strategy.clients)}")
-        self.context.logger.debug(
-            f"Handling websocket request in skill: {message.dialogue_reference}"
-        )
+        self.context.logger.debug(f"Handling websocket request in skill: {message.dialogue_reference}")
 
     def handle_api_request(self, message: UiHttpMessage, dialogue) -> UiHttpMessage:
         """Handle the api request."""
@@ -149,9 +126,7 @@ class UserInterfaceHttpHandler(BaseHandler):
         if parts[-1] == "agent-info":
             data = {
                 "service-id": self.context.params.on_chain_service_id,
-                "safe-address": self.context.params.setup_params[
-                    "safe_contract_address"
-                ],
+                "safe-address": self.context.params.setup_params["safe_contract_address"],
                 "agent-address": self.context.agent_address,
                 "agent-status": "active" if self.context.is_active else "inactive",
             }
@@ -198,10 +173,7 @@ class UserInterfaceHttpHandler(BaseHandler):
         if path == "":
             path = "index.html"
 
-        if routes is None:
-            content = None
-        else:
-            content = routes.get(path, None)
+        content = None if routes is None else routes.get(path, None)
         # we want to extract the path from the url
         self.context.logger.info(f"Received request for path: {path}")
 
@@ -211,7 +183,7 @@ class UserInterfaceHttpHandler(BaseHandler):
         # as we are serving the frontend, we need to set the headers accordingly
         # X-Content-Type-Options: nosniff
         # we now set headers for the responses
-        if path.endswith(".html" or path == "index.html" or path == ""):
+        if path.endswith(".html"):
             headers = "Content-Type: text/html; charset=utf-8\n"
         elif path.endswith(".js"):
             headers = "Content-Type: application/javascript; charset=utf-8\n"
@@ -228,9 +200,7 @@ class UserInterfaceHttpHandler(BaseHandler):
 
         return headers, content
 
-    def send_http_response(
-        self, message: UiHttpMessage, dialogue, headers: str, content: bytes
-    ) -> None:
+    def send_http_response(self, message: UiHttpMessage, dialogue, headers: str, content: bytes) -> None:
         """Send the http response."""
         cors_headers = self.get_headers(headers)
         response_msg = dialogue.reply(
@@ -265,8 +235,7 @@ class UserInterfaceWsHandler(UserInterfaceHttpHandler):
     SUPPORTED_PROTOCOL = WebsocketsMessage.protocol_id
 
     def handle(self, message: Message) -> None:
-        """
-        Implement the reaction to an envelope.
+        """Implement the reaction to an envelope.
 
         :param message: the message
         """
@@ -279,42 +248,28 @@ class UserInterfaceWsHandler(UserInterfaceHttpHandler):
             return self._handle_disconnect(message, dialogue)
         # it is an existing dialogue
         if dialogue is None:
-            self.context.logger.error(
-                f"Could not locate dialogue for message={message}"
-            )
+            self.context.logger.error(f"Could not locate dialogue for message={message}")
             return None
         if message.performative == WebsocketsMessage.Performative.SEND:
             return self._handle_send(message, dialogue)
-        self.context.logger.warning(
-            f"Cannot handle websockets message of performative={message.performative}"
-        )
+        self.context.logger.warning(f"Cannot handle websockets message of performative={message.performative}")
         return None
 
-    def _handle_disconnect(
-        self, message: Message, dialogue: WebsocketsDialogue
-    ) -> None:
-        """
-        Implement the reaction to an envelope.
+    def _handle_disconnect(self, message: Message, dialogue: WebsocketsDialogue) -> None:
+        """Implement the reaction to an envelope.
 
         :param message: the message
         """
         self.context.logger.info(f"Handling disconnect message in skill: {message}")
-        ws_dialogues_to_connections = {
-            v.incomplete_dialogue_label: k for k, v in self.strategy.clients.items()
-        }
+        ws_dialogues_to_connections = {v.incomplete_dialogue_label: k for k, v in self.strategy.clients.items()}
         if dialogue.incomplete_dialogue_label in ws_dialogues_to_connections:
-            del self.strategy.clients[
-                ws_dialogues_to_connections[dialogue.incomplete_dialogue_label]
-            ]
+            del self.strategy.clients[ws_dialogues_to_connections[dialogue.incomplete_dialogue_label]]
             self.context.logger.info(f"Total clients: {len(self.strategy.clients)}")
         else:
-            self.context.logger.warning(
-                f"Could not find dialogue to disconnect: {dialogue.incomplete_dialogue_label}"
-            )
+            self.context.logger.warning(f"Could not find dialogue to disconnect: {dialogue.incomplete_dialogue_label}")
 
     def _handle_send(self, message: Message, dialogue) -> None:
-        """
-        Implement the reaction to an envelope.
+        """Implement the reaction to an envelope.
 
         :param message: the message
         """
@@ -338,9 +293,7 @@ class UserInterfaceWsHandler(UserInterfaceHttpHandler):
         return cast(WebsocketsDialogues, self.context.user_interface_ws_dialogues)
 
     def _handle_connect(self, message: Message) -> None:
-        """
-        Implement the reaction to the connect message.
-        """
+        """Implement the reaction to the connect message."""
 
         dialogue: WebsocketsDialogue = self.websocket_dialogues.get_dialogue(message)
 
@@ -354,9 +307,7 @@ class UserInterfaceWsHandler(UserInterfaceHttpHandler):
             success=True,
             target_message=message,
         )
-        self.context.logger.info(
-            f"Handling connect message in skill: {client_reference}"
-        )
+        self.context.logger.info(f"Handling connect message in skill: {client_reference}")
         self.strategy.clients[client_reference] = dialogue
         self.context.outbox.put_message(message=response_msg)
 

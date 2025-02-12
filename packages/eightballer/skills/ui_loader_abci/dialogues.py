@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 # ------------------------------------------------------------------------------
 #
 #   Copyright 2024 Valory AG
@@ -21,63 +20,33 @@
 
 from typing import Any
 
+from aea.skills.base import Model
 from aea.protocols.base import Address, Message
 from aea.protocols.dialogue.base import Dialogue as BaseDialogue
-from aea.skills.base import Model
 
 from packages.eightballer.protocols.http.dialogues import (
     HttpDialogue as BaseUiHttpDialogue,
-)
-from packages.eightballer.protocols.http.dialogues import (
     HttpDialogues as BaseUiHttpDialogues,
 )
 from packages.eightballer.protocols.websockets.dialogues import (
     WebsocketsDialogue as BaseWebsocketsDialogue,
-)
-from packages.eightballer.protocols.websockets.dialogues import (
     WebsocketsDialogues as BaseWebsocketsDialogues,
 )
 from packages.valory.skills.abstract_round_abci.dialogues import (
     AbciDialogue as BaseAbciDialogue,
-)
-from packages.valory.skills.abstract_round_abci.dialogues import (
-    AbciDialogues as BaseAbciDialogues,
-)
-from packages.valory.skills.abstract_round_abci.dialogues import (
-    ContractApiDialogue as BaseContractApiDialogue,
-)
-from packages.valory.skills.abstract_round_abci.dialogues import (
-    ContractApiDialogues as BaseContractApiDialogues,
-)
-from packages.valory.skills.abstract_round_abci.dialogues import (
     HttpDialogue as BaseHttpDialogue,
-)
-from packages.valory.skills.abstract_round_abci.dialogues import (
-    HttpDialogues as BaseHttpDialogues,
-)
-from packages.valory.skills.abstract_round_abci.dialogues import (
     IpfsDialogue as BaseIpfsDialogue,
-)
-from packages.valory.skills.abstract_round_abci.dialogues import (
+    AbciDialogues as BaseAbciDialogues,
+    HttpDialogues as BaseHttpDialogues,
     IpfsDialogues as BaseIpfsDialogues,
-)
-from packages.valory.skills.abstract_round_abci.dialogues import (
-    LedgerApiDialogue as BaseLedgerApiDialogue,
-)
-from packages.valory.skills.abstract_round_abci.dialogues import (
-    LedgerApiDialogues as BaseLedgerApiDialogues,
-)
-from packages.valory.skills.abstract_round_abci.dialogues import (
     SigningDialogue as BaseSigningDialogue,
-)
-from packages.valory.skills.abstract_round_abci.dialogues import (
     SigningDialogues as BaseSigningDialogues,
-)
-from packages.valory.skills.abstract_round_abci.dialogues import (
+    LedgerApiDialogue as BaseLedgerApiDialogue,
+    LedgerApiDialogues as BaseLedgerApiDialogues,
     TendermintDialogue as BaseTendermintDialogue,
-)
-from packages.valory.skills.abstract_round_abci.dialogues import (
+    ContractApiDialogue as BaseContractApiDialogue,
     TendermintDialogues as BaseTendermintDialogues,
+    ContractApiDialogues as BaseContractApiDialogues,
 )
 
 
@@ -89,8 +58,7 @@ class UserInterfaceHttpDialogues(Model, BaseUiHttpDialogues):
     """Dialogues class for the ui_loader_abci skill."""
 
     def __init__(self, **kwargs: Any) -> None:
-        """
-        Initialize dialogues.
+        """Initialize dialogues.
 
         :param kwargs: keyword arguments
         """
@@ -99,7 +67,7 @@ class UserInterfaceHttpDialogues(Model, BaseUiHttpDialogues):
         def role_from_first_message(  # pylint: disable=unused-argument
             message: Message, receiver_address: Address
         ) -> BaseDialogue.Role:
-            """Infer the role of the agent from an incoming/outgoing first message
+            """Infer the role of the agent from an incoming/outgoing first message.
 
             :param message: an incoming/outgoing first message
             :param receiver_address: the address of the receiving agent
@@ -123,8 +91,7 @@ class UserInterfaceWebSocketDialogues(Model, BaseWebsocketsDialogues):
     """Dialogues class for the ui_loader_abci skill."""
 
     def __init__(self, **kwargs: Any) -> None:
-        """
-        Initialize dialogues.
+        """Initialize dialogues.
 
         :param kwargs: keyword arguments
         """
@@ -133,7 +100,7 @@ class UserInterfaceWebSocketDialogues(Model, BaseWebsocketsDialogues):
         def role_from_first_message(  # pylint: disable=unused-argument
             message: Message, receiver_address: Address
         ) -> BaseDialogue.Role:
-            """Infer the role of the agent from an incoming/outgoing first message
+            """Infer the role of the agent from an incoming/outgoing first message.
 
             :param message: an incoming/outgoing first message
             :param receiver_address: the address of the receiving agent

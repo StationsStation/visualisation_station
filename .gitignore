@@ -64,3 +64,9 @@ packages/eightballer/protocols/websockets
 packages/eightballer/connections/http_client
 packages/eightballer/connections/http_server
 packages/eightballer/connections/websocket_server
+
+packages/eightballer/protocols/default
+packages/eightballer/protocols/prometheus
+packages/eightballer/connections/prometheus
+packages/eightballer/skills/metrics
+packages/eightballer/skills/prometheus

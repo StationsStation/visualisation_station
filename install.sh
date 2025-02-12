@@ -6,6 +6,7 @@ set -euo pipefail
 PROTOC_VERSION="27.2"
 PROTOLINT_VERSION="0.50.0"
 
+
 # Function to get the appropriate download URL based on OS and architecture
 get_download_url() {
     local tool=$1
@@ -60,6 +61,7 @@ get_download_url() {
 install_tool() {
     local tool=$1
     local url
+    local venv_dir=$(echo $(poetry run which python) | sed 's|\(.*\)/python|\1|')
     url=$(get_download_url "$tool") || return 1
 
     echo "Installing $tool"
@@ -93,14 +95,14 @@ install_tool() {
     esac
 
     if [ "$tool" = "protoc" ]; then
-        if ! command -v protoc &> /dev/null; then
-            sudo mv bin/protoc /usr/local/bin/protoc
+        if ! which protoc &> /dev/null; then
+            mv bin/protoc $venv_dir/protoc
         else
             echo "protoc is already installed, skipping..."
         fi
     elif [ "$tool" = "protolint" ]; then
-        if ! command -v protolint &> /dev/null; then
-            sudo mv protolint /usr/local/bin/protolint
+        if ! which protolint &> /dev/null; then
+            mv protolint $venv_dir/protolint
         else
             echo "protolint is already installed, skipping..."
         fi
@@ -135,10 +137,12 @@ function install_poetry_deps() {
 
     echo "Installing package dependencies via poetry..."
     echo "Using poetry executable: $poetry_executable"
+    export PYTHON_KEYRING_BACKEND=keyring.backends.null.Keyring
     poetry install > /dev/null || exit 1
     echo "Checking if aea is installed"
     poetry run aea --version
     echo "Done installing dependencies"
+
 }
 # Main execution
 
@@ -153,15 +157,24 @@ function set_env_file () {
 function setup_autonomy() {
     echo "Setting up autonomy"
     echo 'Initializing the author and remote for aea and syncing packages...'
-    author=$(cat ~/.aea/cli_config.yaml | yq -r '.author') || author="ci"
+
+    # Extract author from config file with fallback to ci
+    author=$(grep "^author:" ~/.aea/cli_config.yaml 2>/dev/null | sed 's/author:[[:space:]]*//') || author="ci"
+
     poetry run aea init --remote --author $author > /dev/null || exit 1
     echo 'Done initializing the author and remote for aea using the author: ' $author
     echo 'To change the author, run the command;
     `poetry run aea init --remote --author <author>`'
-    poetry run autonomy packages sync > /dev/null || echo 'Warning: failed to sync packages as part of autonomy setup'
+
+    if [ -f "packages/packages.json" ]; then
+        echo 'Syncing packages...'
+        poetry run autonomy packages sync > /dev/null || echo 'Warning: failed to sync packages as part of autonomy setup'
+    fi
 }
 
 main() {
+    install_poetry_deps
+
     install_tool "protoc" || exit 1
     install_tool "protolint" || exit 1
 
@@ -170,7 +183,6 @@ main() {
     verify "protolint"
     verify "docker"
 
-    install_poetry_deps
 
     echo "Installation completed successfully!"
     setup_autonomy

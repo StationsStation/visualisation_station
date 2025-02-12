@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 # ------------------------------------------------------------------------------
 #
 #   Copyright 2024 Valory AG
@@ -19,21 +18,22 @@
 
 """This package contains round behaviours of ComponentLoadingAbciApp."""
 
-from dataclasses import dataclass, field
+from typing import Any
 from pathlib import Path
-from typing import Any, Dict, Hashable, Optional, Type
+from dataclasses import field, dataclass
+from collections.abc import Hashable
 
 import pytest
 
+from packages.valory.skills.abstract_round_abci.base import AbciAppDB
+from packages.eightballer.skills.ui_loader_abci.rounds import Event, SynchronizedData
 from packages.eightballer.skills.ui_loader_abci.behaviours import (
+    ErrorBehaviour,
+    SetupBehaviour,
+    HealthcheckBehaviour,
     ComponentLoadingBaseBehaviour,
     ComponentLoadingRoundBehaviour,
-    ErrorBehaviour,
-    HealthcheckBehaviour,
-    SetupBehaviour,
 )
-from packages.eightballer.skills.ui_loader_abci.rounds import Event, SynchronizedData
-from packages.valory.skills.abstract_round_abci.base import AbciAppDB
 from packages.valory.skills.abstract_round_abci.behaviours import BaseBehaviour
 from packages.valory.skills.abstract_round_abci.test_tools.base import (
     FSMBehaviourBaseCase,
@@ -42,12 +42,12 @@ from packages.valory.skills.abstract_round_abci.test_tools.base import (
 
 @dataclass
 class BehaviourTestCase:
-    """BehaviourTestCase"""
+    """BehaviourTestCase."""
 
     name: str
-    initial_data: Dict[str, Hashable]
+    initial_data: dict[str, Hashable]
     event: Event
-    kwargs: Dict[str, Any] = field(default_factory=dict)
+    kwargs: dict[str, Any] = field(default_factory=dict)
 
 
 class BaseComponentLoadingTest(FSMBehaviourBaseCase):
@@ -56,19 +56,19 @@ class BaseComponentLoadingTest(FSMBehaviourBaseCase):
     path_to_skill = Path(__file__).parent.parent
 
     behaviour: ComponentLoadingRoundBehaviour
-    behaviour_class: Type[ComponentLoadingBaseBehaviour]
-    next_behaviour_class: Type[ComponentLoadingBaseBehaviour]
+    behaviour_class: type[ComponentLoadingBaseBehaviour]
+    next_behaviour_class: type[ComponentLoadingBaseBehaviour]
     synchronized_data: SynchronizedData
     done_event = Event.DONE
 
     @property
     def current_behaviour_id(self) -> str:
-        """Current RoundBehaviour's behaviour id"""
+        """Current RoundBehaviour's behaviour id."""
 
         return self.behaviour.current_behaviour.behaviour_id
 
-    def fast_forward(self, data: Optional[Dict[str, Any]] = None) -> None:
-        """Fast-forward on initialization"""
+    def fast_forward(self, data: dict[str, Any] | None = None) -> None:
+        """Fast-forward on initialization."""
 
         data = data if data is not None else {}
         self.fast_forward_to_behaviour(
@@ -79,7 +79,7 @@ class BaseComponentLoadingTest(FSMBehaviourBaseCase):
         assert self.current_behaviour_id == self.behaviour_class.behaviour_id
 
     def complete(self, event: Event) -> None:
-        """Complete test"""
+        """Complete test."""
 
         self.behaviour.act_wrapper()
         self.mock_a2a_transaction()
@@ -89,10 +89,10 @@ class BaseComponentLoadingTest(FSMBehaviourBaseCase):
 
 
 class TestErrorBehaviour(BaseComponentLoadingTest):
-    """Tests ErrorBehaviour"""
+    """Tests ErrorBehaviour."""
 
-    behaviour_class: Type[BaseBehaviour] = ErrorBehaviour
-    next_behaviour_class: Type[BaseBehaviour] = ...
+    behaviour_class: type[BaseBehaviour] = ErrorBehaviour
+    next_behaviour_class: type[BaseBehaviour] = ...
 
     @pytest.mark.parametrize("test_case", [])
     def test_run(self, test_case: BehaviourTestCase) -> None:
@@ -103,10 +103,10 @@ class TestErrorBehaviour(BaseComponentLoadingTest):
 
 
 class TestHealthcheckBehaviour(BaseComponentLoadingTest):
-    """Tests HealthcheckBehaviour"""
+    """Tests HealthcheckBehaviour."""
 
-    behaviour_class: Type[BaseBehaviour] = HealthcheckBehaviour
-    next_behaviour_class: Type[BaseBehaviour] = ...
+    behaviour_class: type[BaseBehaviour] = HealthcheckBehaviour
+    next_behaviour_class: type[BaseBehaviour] = ...
 
     @pytest.mark.parametrize("test_case", [])
     def test_run(self, test_case: BehaviourTestCase) -> None:
@@ -117,10 +117,10 @@ class TestHealthcheckBehaviour(BaseComponentLoadingTest):
 
 
 class TestSetupBehaviour(BaseComponentLoadingTest):
-    """Tests SetupBehaviour"""
+    """Tests SetupBehaviour."""
 
-    behaviour_class: Type[BaseBehaviour] = SetupBehaviour
-    next_behaviour_class: Type[BaseBehaviour] = ...
+    behaviour_class: type[BaseBehaviour] = SetupBehaviour
+    next_behaviour_class: type[BaseBehaviour] = ...
 
     @pytest.mark.parametrize("test_case", [])
     def test_run(self, test_case: BehaviourTestCase) -> None:

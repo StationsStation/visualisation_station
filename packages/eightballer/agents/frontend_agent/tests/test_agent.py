@@ -3,30 +3,31 @@
 import json
 import subprocess
 from pathlib import Path
-from typing import Generator
+from collections.abc import Generator
 
+import yaml
 import docker
 import pytest
-import yaml
-from aea.configurations.base import ComponentType, PublicId
-from aea.configurations.constants import (
-    DEFAULT_PRIVATE_KEY_FILE,
-    LAUNCH_SUCCEED_MESSAGE,
-)
+from web3 import Web3
+from aea.configurations.base import PublicId, ComponentType
 from aea.configurations.loader import load_component_configuration
 from aea.test_tools.test_cases import AEATestCaseMany
-from aea_test_autonomy.configurations import ANY_ADDRESS
+from aea.configurations.constants import (
+    LAUNCH_SUCCEED_MESSAGE,
+    DEFAULT_PRIVATE_KEY_FILE,
+)
 from aea_test_autonomy.docker.base import launch_image
-from aea_test_autonomy.docker.tendermint import TendermintDockerImage
+from aea_test_autonomy.configurations import ANY_ADDRESS
 from aea_test_autonomy.fixture_helpers import (  # noqa: F401
     UseTendermint,
     abci_host,
     abci_port,
-    ipfs_daemon,
     tendermint,
+    ipfs_daemon,
     tendermint_port,
 )
-from web3 import Web3
+from aea_test_autonomy.docker.tendermint import TendermintDockerImage
+
 
 DEFAULT_ENCODING = "utf-8"
 TERMINATION_TIMEOUT = 30
@@ -37,7 +38,7 @@ AUTHOR = "eightballer"
 VERSION = "0.1.0"
 
 
-@pytest.fixture(scope="function")
+@pytest.fixture
 def tendermint_function(
     tendermint_port: int,  # noqa: F811
     abci_host: str,  # noqa: F811
@@ -50,9 +51,7 @@ def tendermint_function(
     yield from launch_image(image, timeout=timeout, max_attempts=max_attempts)
 
 
-@pytest.mark.usefixtures(
-    "tendermint_function", "tendermint_port", "abci_host", "abci_port"
-)
+@pytest.mark.usefixtures("tendermint_function", "tendermint_port", "abci_host", "abci_port")
 class TestAgentLaunch(AEATestCaseMany, UseTendermint):
     """Test that the Agent launches."""
 
@@ -64,7 +63,7 @@ class TestAgentLaunch(AEATestCaseMany, UseTendermint):
     @staticmethod
     def load_custom_components():
         config_path = Path(__file__).parent.parent / "aea-config.yaml"
-        with open(config_path, "r", encoding=DEFAULT_ENCODING) as f:
+        with open(config_path, encoding=DEFAULT_ENCODING) as f:
             configs = list(yaml.safe_load_all(f))
             main_config = configs[0]
 
@@ -74,10 +73,7 @@ class TestAgentLaunch(AEATestCaseMany, UseTendermint):
 
                 component_config = load_component_configuration(
                     ComponentType.CUSTOM,
-                    Path(__file__).parent.parent.parent.parent.parent
-                    / public_id.author
-                    / "customs"
-                    / public_id.name,
+                    Path(__file__).parent.parent.parent.parent.parent / public_id.author / "customs" / public_id.name,
                 )
 
                 handler_class = component_config.json["handlers"][0]["class_name"]
@@ -85,19 +81,15 @@ class TestAgentLaunch(AEATestCaseMany, UseTendermint):
 
             return components
 
-    @pytest.mark.parametrize("author,component,handler_class", load_custom_components())
+    @pytest.mark.parametrize(("author", "component", "handler_class"), load_custom_components())
     def test_run(self, author: str, component: str, handler_class: str) -> None:
         """Run the ABCI skill with different custom components."""
         agent_name = f"base_{author}_{component}"
-        self.fetch_agent(
-            f"{AUTHOR}/{AGENT_NAME}:{VERSION}", agent_name, is_local=self.IS_LOCAL
-        )
+        self.fetch_agent(f"{AUTHOR}/{AGENT_NAME}:{VERSION}", agent_name, is_local=self.IS_LOCAL)
         self.set_agent_context(agent_name)
         self.generate_private_key("ethereum")
 
-        with open(
-            f"{agent_name}/{DEFAULT_PRIVATE_KEY_FILE}", encoding=DEFAULT_ENCODING
-        ) as f:
+        with open(f"{agent_name}/{DEFAULT_PRIVATE_KEY_FILE}", encoding=DEFAULT_ENCODING) as f:
             self.eth_address = Web3().eth.account.from_key(f.read()).address
 
         self.add_private_key("ethereum", DEFAULT_PRIVATE_KEY_FILE)
@@ -143,17 +135,13 @@ class TestAgentLaunch(AEATestCaseMany, UseTendermint):
         ), f"Failed to terminate agents within timeout for {author}/{component}"
 
     @classmethod
-    def is_running(
-        cls, process: subprocess.Popen, timeout: int = DEFAULT_LAUNCH_TIMEOUT
-    ) -> bool:
+    def is_running(cls, process: subprocess.Popen, timeout: int = DEFAULT_LAUNCH_TIMEOUT) -> bool:
         """Check if the AEA is launched and running (ready to process messages).
 
         :param process: agent subprocess.
         :param timeout: the timeout to wait for launch to complete
         :return: bool indicating status
         """
-        missing_strings = cls.missing_from_output(
-            process, (LAUNCH_SUCCEED_MESSAGE,), timeout, is_terminating=False
-        )
+        missing_strings = cls.missing_from_output(process, (LAUNCH_SUCCEED_MESSAGE,), timeout, is_terminating=False)
 
         return missing_strings == []

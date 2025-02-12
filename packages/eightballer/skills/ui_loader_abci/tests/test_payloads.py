@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 # ------------------------------------------------------------------------------
 #
 #   Copyright 2024 Valory AG
@@ -20,7 +19,7 @@
 """This package contains payload tests for the ComponentLoadingAbciApp."""
 
 from dataclasses import dataclass
-from typing import Hashable, Type
+from collections.abc import Hashable
 
 import pytest
 
@@ -29,16 +28,16 @@ from packages.eightballer.skills.ui_loader_abci.payloads import BaseTxPayload
 
 @dataclass
 class PayloadTestCase:
-    """PayloadTestCase"""
+    """PayloadTestCase."""
 
     name: str
-    payload_cls: Type[BaseTxPayload]
+    payload_cls: type[BaseTxPayload]
     content: Hashable
 
 
 @pytest.mark.parametrize("test_case", [])
 def test_payloads(test_case: PayloadTestCase) -> None:
-    """Tests for ComponentLoadingAbciApp payloads"""
+    """Tests for ComponentLoadingAbciApp payloads."""
 
     payload = test_case.payload_cls(sender="sender", content=test_case.content)
     assert payload.sender == "sender"

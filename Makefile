@@ -1,5 +1,7 @@
 # Makefile
 
+HOOKS_DIR = .git/hooks
+
 .PHONY: clean
 clean: clean-build clean-pyc clean-test clean-docs
 
@@ -44,7 +46,7 @@ clean-test:
 .PHONY: hashes
 hashes: clean
 	poetry run autonomy packages lock
-	poetry run adev -v -n 0 lint
+	poetry run autonomy push-all
 
 lint:
 	poetry run adev -v -n 0 lint
@@ -56,8 +58,20 @@ test:
 	poetry run adev -v test
 
 install:
+	@echo "Setting up Git hooks..."
+
+	# Create symlinks for pre-commit and pre-push hooks
+	cp scripts/pre_commit_hook.sh $(HOOKS_DIR)/pre-commit
+	cp scripts/pre_push_hook.sh $(HOOKS_DIR)/pre-push
+	chmod +x $(HOOKS_DIR)/pre-commit
+	chmod +x $(HOOKS_DIR)/pre-push
+	@echo "Git hooks have been installed."
+	@echo "Installing dependencies..."
 	bash install.sh
+	@echo "Dependencies installed."
+	@echo "Syncing packages..."
 	poetry run autonomy packages sync
+	@echo "Packages synced."
 
  sync:
 	git pull

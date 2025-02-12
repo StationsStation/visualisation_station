@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 # ------------------------------------------------------------------------------
 #
 #   Copyright 2023-2024 Valory AG
@@ -19,27 +18,28 @@
 
 """This module contains the trader ABCI application."""
 
-from packages.eightballer.skills.ui_loader_abci.rounds import (
-    ComponentLoadingAbciApp,
-    DoneRound,
-    HealthcheckRound,
-    SetupRound,
-)
-from packages.valory.skills.abstract_round_abci.abci_app_chain import (
-    AbciAppTransitionMapping,
-    chain,
+from packages.valory.skills.reset_pause_abci.rounds import (
+    ResetPauseAbciApp,
+    ResetAndPauseRound,
+    FinishedResetAndPauseRound,
+    FinishedResetAndPauseErrorRound,
 )
 from packages.valory.skills.abstract_round_abci.base import AbciApp
 from packages.valory.skills.registration_abci.rounds import (
     AgentRegistrationAbciApp,
     FinishedRegistrationRound,
 )
-from packages.valory.skills.reset_pause_abci.rounds import (
-    FinishedResetAndPauseErrorRound,
-    FinishedResetAndPauseRound,
-    ResetAndPauseRound,
-    ResetPauseAbciApp,
+from packages.eightballer.skills.ui_loader_abci.rounds import (
+    DoneRound,
+    SetupRound,
+    HealthcheckRound,
+    ComponentLoadingAbciApp,
 )
+from packages.valory.skills.abstract_round_abci.abci_app_chain import (
+    AbciAppTransitionMapping,
+    chain,
+)
+
 
 abci_app_transition_mapping: AbciAppTransitionMapping = {
     FinishedRegistrationRound: SetupRound,
@@ -76,8 +76,7 @@ def setup_with_cross_period_keys(abci_app: AbciApp) -> None:
 
     # update the db to include all the cross-period persisted keys
     update = {
-        db_key: abci_app.synchronized_data.db.get(db_key, None)
-        for db_key in abci_app.cross_period_persisted_keys
+        db_key: abci_app.synchronized_data.db.get(db_key, None) for db_key in abci_app.cross_period_persisted_keys
     }
     abci_app.synchronized_data.db.update(**update)
 
