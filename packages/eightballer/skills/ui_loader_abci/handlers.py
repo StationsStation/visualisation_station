@@ -237,7 +237,10 @@ class UserInterfaceWsHandler(UserInterfaceHttpHandler):
     def handle(self, message: Message) -> None:
         """Implement the reaction to an envelope.
 
-        :param message: the message
+        Args:
+        ----
+            message (Message): the message
+
         """
         if message.performative == WebsocketsMessage.Performative.CONNECT:
             return self._handle_connect(message)
@@ -258,7 +261,10 @@ class UserInterfaceWsHandler(UserInterfaceHttpHandler):
     def _handle_disconnect(self, message: Message, dialogue: WebsocketsDialogue) -> None:
         """Implement the reaction to an envelope.
 
-        :param message: the message
+        Args:
+        ----
+            message (Message): the message
+
         """
         self.context.logger.info(f"Handling disconnect message in skill: {message}")
         ws_dialogues_to_connections = {v.incomplete_dialogue_label: k for k, v in self.strategy.clients.items()}
@@ -271,7 +277,10 @@ class UserInterfaceWsHandler(UserInterfaceHttpHandler):
     def _handle_send(self, message: Message, dialogue) -> None:
         """Implement the reaction to an envelope.
 
-        :param message: the message
+        Args:
+        ----
+            message (Message): the message
+
         """
         # we here need to basically literate all of the handlers from the custom component
         # and then call the handle method on them.
