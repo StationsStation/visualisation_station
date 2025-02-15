@@ -49,7 +49,7 @@ skills:
 customs:
 - eightballer/simple_html:0.1.0:bafybeig6yg632o4bc2lra5rzzlbjux32caktbvgb5e3fohi5huynyfx44m
 - eightballer/simple_react:0.1.0:bafybeigkrh2k5xlinbb2amkpyxbozy7c6qxqfow27wgmn7i4ltnqqunqc4
-- asiyaasha/simple_svelte:0.1.0:bafybeiahq7dzq52ccntrzsh35c4gbd65opa6z4vh7fkkgd4cfl7ngm67te
+- asiyaasha/simple_svelte:0.1.0:bafybeiccgfqve4tc5hlhfw3bghbdfdi63l6l7npnxyx2fg74x2rn4kpxn4
 default_ledger: ethereum
 required_ledgers:
 - ethereum
