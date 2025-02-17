@@ -8,7 +8,6 @@ from collections.abc import Generator
 
 import docker
 import pytest
-import aiofiles
 import websockets
 from web3 import Web3
 from aea.test_tools.test_cases import AEATestCaseMany
@@ -71,9 +70,8 @@ class TestWebsocketIntegration(AEATestCaseMany, UseTendermint):
         # Generate and configure keys
         self.generate_private_key("ethereum")
 
-        async with aiofiles.open(f"{agent_name}/{DEFAULT_PRIVATE_KEY_FILE}", encoding=DEFAULT_ENCODING) as f:
-            private_key = await f.read()
-            self.eth_address = Web3().eth.account.from_key(private_key).address
+        private_key = await asyncio.to_thread(self._read_file, f"{agent_name}/{DEFAULT_PRIVATE_KEY_FILE}")
+        self.eth_address = Web3().eth.account.from_key(private_key).address
 
         self.add_private_key("ethereum", DEFAULT_PRIVATE_KEY_FILE)
 
@@ -91,6 +89,11 @@ class TestWebsocketIntegration(AEATestCaseMany, UseTendermint):
         process = self.run_agent()
         assert self.is_running(process), "Agent failed to start!"
         return process
+
+    def _read_file(self, filepath: str) -> str:
+        """Read file contents synchronously."""
+        with open(filepath, encoding=DEFAULT_ENCODING) as f:
+            return f.read()
 
     async def test_websocket_connection(self):
         """Test basic websocket connection."""
@@ -147,9 +150,8 @@ class TestWebsocketConnectionManagement(AEATestCaseMany, UseTendermint):
         # Generate and configure keys
         self.generate_private_key("ethereum")
 
-        async with aiofiles.open(f"{agent_name}/{DEFAULT_PRIVATE_KEY_FILE}", encoding=DEFAULT_ENCODING) as f:
-            private_key = await f.read()
-            self.eth_address = Web3().eth.account.from_key(private_key).address
+        private_key = await asyncio.to_thread(self._read_file, f"{agent_name}/{DEFAULT_PRIVATE_KEY_FILE}")
+        self.eth_address = Web3().eth.account.from_key(private_key).address
 
         self.add_private_key("ethereum", DEFAULT_PRIVATE_KEY_FILE)
 
@@ -167,6 +169,11 @@ class TestWebsocketConnectionManagement(AEATestCaseMany, UseTendermint):
         process = self.run_agent()
         assert self.is_running(process), "Agent failed to start!"
         return process
+
+    def _read_file(self, filepath: str) -> str:
+        """Read file contents synchronously."""
+        with open(filepath, encoding=DEFAULT_ENCODING) as f:
+            return f.read()
 
     async def test_websocket_connection_management(self):
         """Test websocket connection handling."""
@@ -212,9 +219,8 @@ class TestWebsocketMultipleConnections(AEATestCaseMany, UseTendermint):
         # Generate and configure keys
         self.generate_private_key("ethereum")
 
-        async with aiofiles.open(f"{agent_name}/{DEFAULT_PRIVATE_KEY_FILE}", encoding=DEFAULT_ENCODING) as f:
-            private_key = await f.read()
-            self.eth_address = Web3().eth.account.from_key(private_key).address
+        private_key = await asyncio.to_thread(self._read_file, f"{agent_name}/{DEFAULT_PRIVATE_KEY_FILE}")
+        self.eth_address = Web3().eth.account.from_key(private_key).address
 
         self.add_private_key("ethereum", DEFAULT_PRIVATE_KEY_FILE)
 
@@ -232,6 +238,11 @@ class TestWebsocketMultipleConnections(AEATestCaseMany, UseTendermint):
         process = self.run_agent()
         assert self.is_running(process), "Agent failed to start!"
         return process
+
+    def _read_file(self, filepath: str) -> str:
+        """Read file contents synchronously."""
+        with open(filepath, encoding=DEFAULT_ENCODING) as f:
+            return f.read()
 
     async def test_multiple_websocket_clients(self):
         """Test multiple websocket clients receive messages."""
