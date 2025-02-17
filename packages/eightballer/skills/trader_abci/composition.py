@@ -69,7 +69,10 @@ def setup_with_cross_period_keys(abci_app: AbciApp) -> None:
     and not raising an exception when the first period ends.
     This also protects us in case a round timeout is raised.
 
-    :param abci_app: the abi app's instance.
+    Args:
+    ----
+        abci_app (AbciApp): the abi app's instance.
+
     """
     # call the original setup method
     abci_app._setup()  # noqa
