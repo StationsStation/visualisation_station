@@ -60,7 +60,10 @@ class UserInterfaceHttpDialogues(Model, BaseUiHttpDialogues):
     def __init__(self, **kwargs: Any) -> None:
         """Initialize dialogues.
 
-        :param kwargs: keyword arguments
+        Args:
+        ----
+            **kwargs: Keyword arguments
+
         """
         Model.__init__(self, **kwargs)
 
@@ -69,9 +72,15 @@ class UserInterfaceHttpDialogues(Model, BaseUiHttpDialogues):
         ) -> BaseDialogue.Role:
             """Infer the role of the agent from an incoming/outgoing first message.
 
-            :param message: an incoming/outgoing first message
-            :param receiver_address: the address of the receiving agent
-            :return: The role of the agent
+            Args:
+            ----
+                message (Message): an incoming/outgoing first message
+                receiver_address (Address): the address of the receiving agent
+
+            Returns:
+            -------
+                BaseDialogue.Role: The role of the agent
+
             """
             del message, receiver_address
             return BaseUiHttpDialogue.Role.SERVER
@@ -93,7 +102,10 @@ class UserInterfaceWebSocketDialogues(Model, BaseWebsocketsDialogues):
     def __init__(self, **kwargs: Any) -> None:
         """Initialize dialogues.
 
-        :param kwargs: keyword arguments
+        Args:
+        ----
+            **kwargs: Keyword arguments
+
         """
         Model.__init__(self, **kwargs)
 
@@ -102,9 +114,15 @@ class UserInterfaceWebSocketDialogues(Model, BaseWebsocketsDialogues):
         ) -> BaseDialogue.Role:
             """Infer the role of the agent from an incoming/outgoing first message.
 
-            :param message: an incoming/outgoing first message
-            :param receiver_address: the address of the receiving agent
-            :return: The role of the agent
+            Args:
+            ----
+                message (Message): an incoming/outgoing first message
+                receiver_address (Address): the address of the receiving agent
+
+            Returns:
+            -------
+                BaseDialogue.Role: The role of the agent
+
             """
             del message, receiver_address
             return BaseWebsocketsDialogue.Role.SERVER

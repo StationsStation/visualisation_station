@@ -46,6 +46,7 @@ def tendermint_function(
     timeout: float = 2.0,
     max_attempts: int = 10,
 ) -> Generator:
+    """Tendermint fixture."""
     client = docker.from_env()
     image = TendermintDockerImage(client, abci_host, abci_port, tendermint_port)
     yield from launch_image(image, timeout=timeout, max_attempts=max_attempts)
@@ -62,6 +63,7 @@ class TestAgentLaunch(AEATestCaseMany, UseTendermint):
 
     @staticmethod
     def load_custom_components():
+        """Load custom components."""
         config_path = Path(__file__).parent.parent / "aea-config.yaml"
         with open(config_path, encoding=DEFAULT_ENCODING) as f:
             configs = list(yaml.safe_load_all(f))
@@ -138,9 +140,15 @@ class TestAgentLaunch(AEATestCaseMany, UseTendermint):
     def is_running(cls, process: subprocess.Popen, timeout: int = DEFAULT_LAUNCH_TIMEOUT) -> bool:
         """Check if the AEA is launched and running (ready to process messages).
 
-        :param process: agent subprocess.
-        :param timeout: the timeout to wait for launch to complete
-        :return: bool indicating status
+        Args:
+        ----
+            process (subprocess.Popen): agent subprocess.
+            timeout (int): the timeout to wait for launch to complete
+
+        Returns:
+        -------
+            bool indicating status
+
         """
         missing_strings = cls.missing_from_output(process, (LAUNCH_SUCCEED_MESSAGE,), timeout, is_terminating=False)
 
