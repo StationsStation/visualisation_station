@@ -9,9 +9,6 @@
         "agent/eightballer/frontend_agent/0.1.0": "bafybeieq3t5vfj57hlr4tmezubut4remtpjawwtdk7aepbwpb4gun5px6e"
     },
     "third_party": {
-        "custom/asiyaasha/simple_svelte/0.1.0": "bafybeidqs4wi5znhippj4qfq7eb35k3pypo34zwznkaqp6ctwxfiyt34iy",
-        "custom/eightballer/simple_html/0.1.0": "bafybeid6cbv46ouqaz2wbyurf4a44zudpwmttjledjgx5y7m6izbwnmgq4",
-        "custom/eightballer/simple_react/0.1.0": "bafybeie6fv244pzrm55xc3cghxirg2gckvigcbhxzw3ie45wfeif6byeai",
         "protocol/eightballer/http/0.1.0": "bafybeieoom2ajzvurwsjbivx23dwilarfzkihgqpgqp43ypowpr5xdyjr4",
         "protocol/eightballer/websockets/0.1.0": "bafybeihoiyzxc3ikhgty54snlu7djyn34dcqcuqppnf5zajuabc4ecgxwm",
         "protocol/valory/abci/0.1.0": "bafybeiatodhboj6a3p35x4f4b342lzk6ckxpud23awnqbxwjeon3k5y36u",
@@ -40,7 +37,6 @@
         "skill/valory/abstract_abci/0.1.0": "bafybeia2egqettv7fd4yryya5ocrxdmpxibvt5ayjg2npvblz73rjpoxla",
         "skill/valory/abstract_round_abci/0.1.0": "bafybeia27qmw6w5ds5fcrpj2475brnz742aampe3sgochloijs2l7jovai",
         "skill/valory/reset_pause_abci/0.1.0": "bafybeigebq46oqz2mx2iajupr6p5pgm6z5pvfye5w6zypsseuqtvta7b4a",
-        "skill/valory/registration_abci/0.1.0": "bafybeifaa6ejpihwxxxswqd5qfy63rixml43d3ljnezilflvdtclspjj6y",
-        "skill/eightballer/ui_loader_abci/0.1.0": "bafybeif6nwjubtc4dqzajhiixqwgm6ukfk2abegxy5w3ns72mcawkioobq"
+        "skill/valory/registration_abci/0.1.0": "bafybeifaa6ejpihwxxxswqd5qfy63rixml43d3ljnezilflvdtclspjj6y"
     }
 }
