@@ -3,11 +3,10 @@ Behaviours for the simple react skill.
 """
 
 import os
-from pathlib import Path
 from typing import Optional, cast
+from pathlib import Path
 
 from aea.skills.base import Behaviour
-
 from packages.eightballer.protocols.websockets.message import WebsocketsMessage
 from packages.eightballer.skills.ui_loader_abci.models import (
     UserInterfaceClientStrategy,

@@ -3,8 +3,8 @@ Behaviours for the simple react skill.
 """
 
 import os
-from pathlib import Path
 from typing import Optional, cast
+from pathlib import Path
 
 from aea.skills.base import Behaviour
 

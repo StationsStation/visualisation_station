@@ -19,19 +19,18 @@
 
 """This package contains the tests for rounds of ComponentLoading."""
 
-from dataclasses import dataclass, field
-from typing import Any, Callable, Dict, Hashable, List, Mapping, Type
+from typing import Any, Dict, List, Type, Mapping, Callable, Hashable
+from dataclasses import field, dataclass
 
 import pytest
-
+from packages.valory.skills.abstract_round_abci.base import AbstractRound, BaseTxPayload
 from packages.eightballer.skills.ui_loader_abci.rounds import (
-    ErrorRound,
     Event,
-    HealthcheckRound,
+    ErrorRound,
     SetupRound,
+    HealthcheckRound,
     SynchronizedData,
 )
-from packages.valory.skills.abstract_round_abci.base import AbstractRound, BaseTxPayload
 from packages.valory.skills.abstract_round_abci.test_tools.rounds import (
     BaseRoundTestClass,
 )

@@ -11,13 +11,13 @@ aea_version: '>=1.0.0, <2.0.0'
 fingerprint:
   __init__.py: bafybeic6qfeiarqudbrqebdzopx2cxv7ld6gyjszzebq53yeszwhwzyz5u
   abci_spec.yaml: bafybeig6ffhlqu4w23dwjl7r46hfc63t6vfzr5d7owc2ffcosdrzlfaieu
-  behaviours.py: bafybeigirgf64ktcbtvxnulbjsfp2hqjfbff7lt2rn3iei2bp3idio6gey
+  behaviours.py: bafybeidjlw5qa2iqzqjraikujep4rivpdpusn5mvxkoujfxoufx4gbq7eq
   dialogues.py: bafybeigkx6rok7etuvgl4q4qn3nzlzkm75nisxe3kkldumboj5e2de7qya
-  handlers.py: bafybeibn734tn73ewfb3ldss32q5ispvylanbvsczzdou7irhatc5vpbfm
-  models.py: bafybeiaw7da26ix5yuv4dq27jbjwrpyaqsw6xxfb5b6m7mko4hu427l4de
+  handlers.py: bafybeiavzshewkpymggwssaqw5qsjraw4xhoydqxccff7dc23o5amgu3qe
+  models.py: bafybeidscmncmycnywveskebom5kxc3hjptdthhqvurzvdujhhc5eoiktq
   payloads.py: bafybeihlb2vwuvpuwrvog2vfyuhzuq7i6ef36epa3im52a3sftlsj4g5qe
   rounds.py: bafybeifjzofmowtbavb6rnu4v7j5brrgfhgisl6zoinacrxpvclx743qem
-  tests/__init__.py: bafybeiccs7cgyonjxryqymbv5kjkgep7iojx74f27fti6npni3zuxu7esi
+  tests/__init__.py: bafybeidlhllgpf65xwk357wukpguuaz6hxhkyh7dwplv2xkxlrlk4b7zty
   tests/test_behaviours.py: bafybeifwxr6hzx5wyreubeskmqeuxqj3toqqwx5kedljmxlayx4tx2enia
   tests/test_dialogues.py: bafybeieb67vvwpslksvuz2sdbftfhfg74cekbqrp7ekjsmwz3wzxf45cjy
   tests/test_handlers.py: bafybeifqtzxifou3qaihsdi75vkqzfvhgxb6jgurciexb26sqm4ukw4vj4

@@ -19,25 +19,18 @@
 
 """This module contains the shared state for the abci skill of ComponentLoadingAbciApp."""
 
-from typing import Any
+from typing import Any, Dict
 
 from aea.skills.base import Model
-
 from packages.eightballer.skills.ui_loader_abci.rounds import (
-    ComponentLoadingAbciApp,
     Event,
-)
-from packages.valory.skills.abstract_round_abci.models import (
-    BaseParams,
-)
-from packages.valory.skills.abstract_round_abci.models import (
-    BenchmarkTool as BaseBenchmarkTool,
+    ComponentLoadingAbciApp,
 )
 from packages.valory.skills.abstract_round_abci.models import (
     Requests as BaseRequests,
-)
-from packages.valory.skills.abstract_round_abci.models import (
+    BaseParams,
     SharedState as BaseSharedState,
+    BenchmarkTool as BaseBenchmarkTool,
 )
 
 
@@ -50,7 +43,7 @@ class SharedState(BaseSharedState):
 class UserInterfaceClientStrategy(Model):
     """This class represents a user interface client strategy."""
 
-    clients: dict[str, dict] = {}
+    clients: Dict[str, Any] = {}
     handlers: list = []
     behaviours: list = []
     routes: dict = {}

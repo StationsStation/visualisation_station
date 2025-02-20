@@ -19,8 +19,8 @@
 
 """This module contains the transaction payloads of the ComponentLoadingAbciApp."""
 
-from dataclasses import dataclass
 from typing import Optional
+from dataclasses import dataclass
 
 from packages.valory.skills.abstract_round_abci.base import BaseTxPayload
 

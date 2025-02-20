@@ -21,20 +21,20 @@
 
 from typing import Set, Type
 
+from packages.valory.skills.reset_pause_abci.behaviours import (
+    ResetPauseABCIConsensusBehaviour,
+)
 from packages.eightballer.skills.trader_abci.composition import TraderAbciApp
+from packages.valory.skills.registration_abci.behaviours import (
+    RegistrationStartupBehaviour,
+    AgentRegistrationRoundBehaviour,
+)
 from packages.eightballer.skills.ui_loader_abci.behaviours import (
     ComponentLoadingRoundBehaviour,
 )
 from packages.valory.skills.abstract_round_abci.behaviours import (
-    AbstractRoundBehaviour,
     BaseBehaviour,
-)
-from packages.valory.skills.registration_abci.behaviours import (
-    AgentRegistrationRoundBehaviour,
-    RegistrationStartupBehaviour,
-)
-from packages.valory.skills.reset_pause_abci.behaviours import (
-    ResetPauseABCIConsensusBehaviour,
+    AbstractRoundBehaviour,
 )
 
 

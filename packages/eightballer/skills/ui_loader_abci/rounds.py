@@ -20,21 +20,21 @@
 """This package contains the rounds of ComponentLoadingAbciApp."""
 
 from enum import Enum
-from typing import Dict, FrozenSet, Optional, Set, Tuple
+from typing import Set, Dict, Tuple, Optional, FrozenSet
 
-from packages.eightballer.skills.ui_loader_abci.payloads import (
-    ErrorPayload,
-    HealthcheckPayload,
-    SetupPayload,
-)
 from packages.valory.skills.abstract_round_abci.base import (
     AbciApp,
-    AbciAppTransitionFunction,
     AppState,
-    BaseSynchronizedData,
-    CollectSameUntilThresholdRound,
-    DegenerateRound,
     EventToTimeout,
+    DegenerateRound,
+    BaseSynchronizedData,
+    AbciAppTransitionFunction,
+    CollectSameUntilThresholdRound,
+)
+from packages.eightballer.skills.ui_loader_abci.payloads import (
+    ErrorPayload,
+    SetupPayload,
+    HealthcheckPayload,
 )
 
 

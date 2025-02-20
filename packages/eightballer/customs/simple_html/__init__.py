@@ -19,8 +19,8 @@
 
 """This module contains a custom package."""
 
-from . import behaviours as custom_behaviours
-from . import handlers as custom_handlers
+from . import handlers as custom_handlers, behaviours as custom_behaviours
+
 
 behaviours = custom_behaviours
 handlers = custom_handlers

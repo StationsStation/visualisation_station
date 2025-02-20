@@ -16,7 +16,7 @@ paths:
             text/html:
               schema:
                 type: string
-  /api/agent-info:
+  api/agent-info:
     get:
       summary: Returns the agent's state and info
       responses:
@@ -35,7 +35,7 @@ paths:
                     type: string
                   agent-status:
                     type: string
-  /api/mech-events:
+  api/mech-events:
     get:
       summary: Returns the list of mech events and the info for each event
       responses:

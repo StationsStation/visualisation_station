@@ -21,58 +21,27 @@
 
 from packages.eightballer.skills.ui_loader_abci.dialogues import (
     UserInterfaceHttpDialogue as BaseUserInterfaceHttpDialogue,
-)
-from packages.eightballer.skills.ui_loader_abci.dialogues import (
     UserInterfaceHttpDialogues as BaseUserInterfaceHttpDialogues,
-)
-from packages.eightballer.skills.ui_loader_abci.dialogues import (
     UserInterfaceWebSocketDialogue as BaseUserInterfaceWebSocketDialogue,
-)
-from packages.eightballer.skills.ui_loader_abci.dialogues import (
     UserInterfaceWebSocketDialogues as BaseUserInterfaceWebSocketDialogues,
 )
 from packages.valory.skills.abstract_round_abci.dialogues import (
     AbciDialogue as BaseAbciDialogue,
-)
-from packages.valory.skills.abstract_round_abci.dialogues import (
+    HttpDialogue as BaseHttpDialogue,
+    IpfsDialogue as BaseIpfsDialogue,
     AbciDialogues as BaseAbciDialogues,
-)
-from packages.valory.skills.abstract_round_abci.dialogues import (
+    HttpDialogues as BaseHttpDialogues,
+    IpfsDialogues as BaseIpfsDialogues,
+    SigningDialogue as BaseSigningDialogue,
+    SigningDialogues as BaseSigningDialogues,
+    LedgerApiDialogue as BaseLedgerApiDialogue,
+    LedgerApiDialogues as BaseLedgerApiDialogues,
+    TendermintDialogue as BaseTendermintDialogue,
     ContractApiDialogue as BaseContractApiDialogue,
-)
-from packages.valory.skills.abstract_round_abci.dialogues import (
+    TendermintDialogues as BaseTendermintDialogues,
     ContractApiDialogues as BaseContractApiDialogues,
 )
-from packages.valory.skills.abstract_round_abci.dialogues import (
-    HttpDialogue as BaseHttpDialogue,
-)
-from packages.valory.skills.abstract_round_abci.dialogues import (
-    HttpDialogues as BaseHttpDialogues,
-)
-from packages.valory.skills.abstract_round_abci.dialogues import (
-    IpfsDialogue as BaseIpfsDialogue,
-)
-from packages.valory.skills.abstract_round_abci.dialogues import (
-    IpfsDialogues as BaseIpfsDialogues,
-)
-from packages.valory.skills.abstract_round_abci.dialogues import (
-    LedgerApiDialogue as BaseLedgerApiDialogue,
-)
-from packages.valory.skills.abstract_round_abci.dialogues import (
-    LedgerApiDialogues as BaseLedgerApiDialogues,
-)
-from packages.valory.skills.abstract_round_abci.dialogues import (
-    SigningDialogue as BaseSigningDialogue,
-)
-from packages.valory.skills.abstract_round_abci.dialogues import (
-    SigningDialogues as BaseSigningDialogues,
-)
-from packages.valory.skills.abstract_round_abci.dialogues import (
-    TendermintDialogue as BaseTendermintDialogue,
-)
-from packages.valory.skills.abstract_round_abci.dialogues import (
-    TendermintDialogues as BaseTendermintDialogues,
-)
+
 
 AbciDialogue = BaseAbciDialogue
 AbciDialogues = BaseAbciDialogues

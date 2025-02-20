@@ -19,21 +19,20 @@
 
 """This package contains round behaviours of ComponentLoadingAbciApp."""
 
-from dataclasses import dataclass, field
+from typing import Any, Dict, Type, Hashable, Optional
 from pathlib import Path
-from typing import Any, Dict, Hashable, Optional, Type
+from dataclasses import field, dataclass
 
 import pytest
-
+from packages.valory.skills.abstract_round_abci.base import AbciAppDB
+from packages.eightballer.skills.ui_loader_abci.rounds import Event, SynchronizedData
 from packages.eightballer.skills.ui_loader_abci.behaviours import (
+    ErrorBehaviour,
+    SetupBehaviour,
+    HealthcheckBehaviour,
     ComponentLoadingBaseBehaviour,
     ComponentLoadingRoundBehaviour,
-    ErrorBehaviour,
-    HealthcheckBehaviour,
-    SetupBehaviour,
 )
-from packages.eightballer.skills.ui_loader_abci.rounds import Event, SynchronizedData
-from packages.valory.skills.abstract_round_abci.base import AbciAppDB
 from packages.valory.skills.abstract_round_abci.behaviours import BaseBehaviour
 from packages.valory.skills.abstract_round_abci.test_tools.base import (
     FSMBehaviourBaseCase,

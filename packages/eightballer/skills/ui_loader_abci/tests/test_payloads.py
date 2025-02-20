@@ -19,11 +19,10 @@
 
 """This package contains payload tests for the ComponentLoadingAbciApp."""
 
+from typing import Type, Hashable
 from dataclasses import dataclass
-from typing import Hashable, Type
 
 import pytest
-
 from packages.eightballer.skills.ui_loader_abci.payloads import BaseTxPayload
 
 

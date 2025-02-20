@@ -22,11 +22,10 @@ fingerprint:
   build/static/js/main.37072b1b.js: bafybeicquyxggyvto4trmooty3ljcoop3ej7akjdwsni72annf2bockcjy
   build/static/js/main.37072b1b.js.LICENSE.txt: bafybeibtpp7lwmzwjzxtse7kfiarsdodgx3ljsudh6g7y2ud6som2strxe
   build/static/js/main.37072b1b.js.map: bafybeieuoznm56ohc774nerh2lvhxsbwavccuokvxqwun5qpad3fynguuu
-  handlers.py: bafybeib3i6iizz7qe5dstrrcp4475lp5e5u5ni3gauemnmpduqsnnsna4i
+  handlers.py: bafybeiedmpnjlu6ebvflknvodplejyriu3we3dnxlzeq5hbjgwte5ambaa
   openapi3_spec.yaml: bafybeiagdbghwj4t4o7uctojvtkjp7i6zxpwu6dltjsawcaeuteyipftty
   readme.md: bafybeihztrfmxw7fhwfvfcjqnxiohctber6hdb7jopumb3mcmfpdzypdv4
-  tests/__init__.py: bafybeih4oyyzgld4vqtbub6zrcrrfofbhmhbr37rvoxuhzchn3bhhjs7za
-  tests/test_simple_react.py: bafybeidafbtgi6v6gnvlkaxiyocgebdkrgcfzoj4j27zsfjbjjviaio6li
+  tests/test_custom.py: bafybeidafbtgi6v6gnvlkaxiyocgebdkrgcfzoj4j27zsfjbjjviaio6li
 fingerprint_ignore_patterns: []
 dependencies: {}
 api_spec: open_api3_spec.yaml

@@ -16,5 +16,3 @@
 #   limitations under the License.
 #
 # ------------------------------------------------------------------------------
-
-"""Tests for the UI Loader ABCI."""

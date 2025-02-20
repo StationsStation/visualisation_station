@@ -21,63 +21,32 @@
 
 from typing import Any
 
+from aea.skills.base import Model
 from aea.protocols.base import Address, Message
 from aea.protocols.dialogue.base import Dialogue as BaseDialogue
-from aea.skills.base import Model
-
 from packages.eightballer.protocols.http.dialogues import (
     HttpDialogue as BaseUiHttpDialogue,
-)
-from packages.eightballer.protocols.http.dialogues import (
     HttpDialogues as BaseUiHttpDialogues,
 )
 from packages.eightballer.protocols.websockets.dialogues import (
     WebsocketsDialogue as BaseWebsocketsDialogue,
-)
-from packages.eightballer.protocols.websockets.dialogues import (
     WebsocketsDialogues as BaseWebsocketsDialogues,
 )
 from packages.valory.skills.abstract_round_abci.dialogues import (
     AbciDialogue as BaseAbciDialogue,
-)
-from packages.valory.skills.abstract_round_abci.dialogues import (
-    AbciDialogues as BaseAbciDialogues,
-)
-from packages.valory.skills.abstract_round_abci.dialogues import (
-    ContractApiDialogue as BaseContractApiDialogue,
-)
-from packages.valory.skills.abstract_round_abci.dialogues import (
-    ContractApiDialogues as BaseContractApiDialogues,
-)
-from packages.valory.skills.abstract_round_abci.dialogues import (
     HttpDialogue as BaseHttpDialogue,
-)
-from packages.valory.skills.abstract_round_abci.dialogues import (
-    HttpDialogues as BaseHttpDialogues,
-)
-from packages.valory.skills.abstract_round_abci.dialogues import (
     IpfsDialogue as BaseIpfsDialogue,
-)
-from packages.valory.skills.abstract_round_abci.dialogues import (
+    AbciDialogues as BaseAbciDialogues,
+    HttpDialogues as BaseHttpDialogues,
     IpfsDialogues as BaseIpfsDialogues,
-)
-from packages.valory.skills.abstract_round_abci.dialogues import (
-    LedgerApiDialogue as BaseLedgerApiDialogue,
-)
-from packages.valory.skills.abstract_round_abci.dialogues import (
-    LedgerApiDialogues as BaseLedgerApiDialogues,
-)
-from packages.valory.skills.abstract_round_abci.dialogues import (
     SigningDialogue as BaseSigningDialogue,
-)
-from packages.valory.skills.abstract_round_abci.dialogues import (
     SigningDialogues as BaseSigningDialogues,
-)
-from packages.valory.skills.abstract_round_abci.dialogues import (
+    LedgerApiDialogue as BaseLedgerApiDialogue,
+    LedgerApiDialogues as BaseLedgerApiDialogues,
     TendermintDialogue as BaseTendermintDialogue,
-)
-from packages.valory.skills.abstract_round_abci.dialogues import (
+    ContractApiDialogue as BaseContractApiDialogue,
     TendermintDialogues as BaseTendermintDialogues,
+    ContractApiDialogues as BaseContractApiDialogues,
 )
 
 
