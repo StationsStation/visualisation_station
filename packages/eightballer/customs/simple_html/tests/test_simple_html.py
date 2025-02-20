@@ -1,6 +1,4 @@
-"""
-Base Custom Tests for test.
-"""
+"""Base Custom Tests for test."""
 
 
 def test_base():

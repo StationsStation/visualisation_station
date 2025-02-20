@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 # ------------------------------------------------------------------------------
 #
 #   Copyright 2023 Valory AG
@@ -20,5 +19,6 @@
 """This module contains the trader chained skill for an AEA."""
 
 from aea.configurations.base import PublicId
+
 
 PUBLIC_ID = PublicId.from_str("eightballer/trader_abci:0.1.0")

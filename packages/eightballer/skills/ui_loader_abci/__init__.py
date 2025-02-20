@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 # ------------------------------------------------------------------------------
 #
 #   Copyright 2024 Valory AG
@@ -20,5 +19,6 @@
 """This module contains the implementation of the default skill."""
 
 from aea.configurations.base import PublicId
+
 
 PUBLIC_ID = PublicId.from_str("eightballer/ui_loader_abci:0.1.0")

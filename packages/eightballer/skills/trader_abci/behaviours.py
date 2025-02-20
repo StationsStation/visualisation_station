@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 # ------------------------------------------------------------------------------
 #
 #   Copyright 2023-2024 Valory AG
@@ -19,21 +18,19 @@
 
 """This module contains the behaviours for the trader skill."""
 
-from typing import Set, Type
-
 from packages.eightballer.skills.trader_abci.composition import TraderAbciApp
+from packages.valory.skills.registration_abci.behaviours import (
+    RegistrationStartupBehaviour,
+    AgentRegistrationRoundBehaviour,
+)
 from packages.eightballer.skills.ui_loader_abci.behaviours import (
     ComponentLoadingRoundBehaviour,
 )
 from packages.valory.skills.abstract_round_abci.behaviours import (
-    AbstractRoundBehaviour,
     BaseBehaviour,
+    AbstractRoundBehaviour,
 )
-from packages.valory.skills.registration_abci.behaviours import (
-    AgentRegistrationRoundBehaviour,
-    RegistrationStartupBehaviour,
-)
-from packages.valory.skills.reset_pause_abci.behaviours import (
+from packages.eightballer.skills.reset_pause_abci.behaviours import (
     ResetPauseABCIConsensusBehaviour,
 )
 
@@ -44,7 +41,7 @@ class TraderConsensusBehaviour(AbstractRoundBehaviour):
     initial_behaviour_cls = RegistrationStartupBehaviour
     abci_app_cls = TraderAbciApp
 
-    behaviours: Set[Type[BaseBehaviour]] = {
+    behaviours: set[type[BaseBehaviour]] = {
         *AgentRegistrationRoundBehaviour.behaviours,
         *ComponentLoadingRoundBehaviour.behaviours,
         *ResetPauseABCIConsensusBehaviour.behaviours,
