@@ -16,7 +16,7 @@ fingerprint:
   handlers.py: bafybeic6c6r4jypa5zorrzdqgijkff7srntiyead6kzucyxchlzmwkvx2i
   models.py: bafybeiexuaz3dor2dqbtoxwa3xjlazcn6hvyc35a67mzvz2btax5lw6ubi
   payloads.py: bafybeicf2fhvfdj4rtyc6tob26i4dvpe2ituoljvqi46us2gpypw2f7ftm
-  rounds.py: bafybeidrri2l7ba6xbow6o6lo6dfsbjlbemqdlki3tjckqqteiu5cwmx7i
+  rounds.py: bafybeifpzywlzdsp6r5n6jrafndltytookanzulxoa2rrxk72m7ymkj7we
   tests/__init__.py: bafybeihv2fxwoukidlayz6ra4git7rjojooxk2grsckxm7vsq2sdmfl7ry
   tests/test_behaviours.py: bafybeiel4pip7f3srdy2bwibdzunwq4f2mgqixzptecjistsprlecv5ape
   tests/test_dialogues.py: bafybeihys5temgpdejvkvjplt262ap7qa2dvf6szydkau5sh4lepvdogqm
@@ -31,7 +31,7 @@ protocols:
 - eightballer/http:0.1.0:bafybeieoom2ajzvurwsjbivx23dwilarfzkihgqpgqp43ypowpr5xdyjr4
 - eightballer/websockets:0.1.0:bafybeihoiyzxc3ikhgty54snlu7djyn34dcqcuqppnf5zajuabc4ecgxwm
 skills:
-- valory/abstract_round_abci:0.1.0:bafybeibovsktd3uxur45nrcomq5shcn46cgxd5idmhxbmjhg32c5abyqim
+- valory/abstract_round_abci:0.1.0:bafybeie5qdfngt2nj4decrfsa4heho45kbj2p2oplmyrdn2jigb4sktx5e
 behaviours:
   main:
     args: {}

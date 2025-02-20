@@ -20,7 +20,6 @@
 
 from typing import Union, cast
 
-from packages.valory.skills.reset_pause_abci.rounds import Event as ResetPauseEvent
 from packages.eightballer.skills.ui_loader_abci.models import (
     SharedState as BaseSharedState,
     UserInterfaceLoaderParams,
@@ -32,6 +31,7 @@ from packages.valory.skills.abstract_round_abci.models import (
     Requests as BaseRequests,
     BenchmarkTool as BaseBenchmarkTool,
 )
+from packages.eightballer.skills.reset_pause_abci.rounds import Event as ResetPauseEvent
 from packages.eightballer.skills.trader_abci.composition import TraderAbciApp
 
 

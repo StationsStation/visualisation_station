@@ -13,9 +13,8 @@ class PingPongHandler(Handler):
 
     def handle(self, message):
         """Handle the data."""
-        got_message = datetime.datetime.now(tz=datetime.timezone.utc).isoformat()
-        response = f"Pong @ {got_message}: {message.data}"
-        return response
+        got_message = datetime.datetime.now(tz=datetime.UTC).isoformat()
+        return f"Pong @ {got_message}: {message.data}"
 
     def teardown(self):
         """Implement the handler teardown."""

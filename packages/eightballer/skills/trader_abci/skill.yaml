@@ -8,12 +8,12 @@ aea_version: '>=1.0.0, <2.0.0'
 fingerprint:
   README.md: bafybeiab4xgadptz4mhvno4p6xvkh7p4peg7iuhotabydriu74dmj6ljga
   __init__.py: bafybeif4y2qp6y2iwldtfiwcy3ur4vdazwiw46o2dfbraxupvjpcz43c4m
-  behaviours.py: bafybeiglnnmwzd5jrtnhxiczt235tbgd35zmxraukfsinyazee4eroao5i
-  composition.py: bafybeibus6irz5nt47p3kocnf6umlacubnutzcsp3kc5cmxads7q2rykoa
+  behaviours.py: bafybeide7yr2tfp2vexuta35rkdo5otzld7tocr4tv4qaxi5ubzgzv57da
+  composition.py: bafybeidnrqtmjlwbnhjzxmm5ce73awy72ktmdberbrwvg7ar4celteesny
   dialogues.py: bafybeigd3yshl6lbfo7g6fbrqzlftfujc7f3jjhq5y6bciaplgdlja5vqu
-  fsm_specification.yaml: bafybeigwqrxxah3c55ome4qffl7ck53hrk2uencz3lym6unfof6qakeqoe
+  fsm_specification.yaml: bafybeicpmhlfnd7qvcjasaoaslz6dagory2bupdzu6molpnqsje7cyjhga
   handlers.py: bafybeid6llm2zq3mycdpzwyhpxuxzpk4qb7hs7s5pyw2nrhztollhiukgi
-  models.py: bafybeidbysqhliyejgrvuvmpwtsnmrcqdidnj2fxveiaodgzufupms5224
+  models.py: bafybeiagjb46sttjvscaprmq5bpl5o4ytlo63qq7imxxtrgnbtntn47yqy
   tests/__init__.py: bafybeiayjxaqrjpu7poz56eozqbi4ln7uene4r27bnq5qeely3ambcmggm
   tests/test_custom.py: bafybeiaqu3mw6kq5yq7blk5vjrd5mtw5ej55vs32ftxdf225k3semjyn4u
 fingerprint_ignore_patterns: []
@@ -21,10 +21,10 @@ connections: []
 contracts: []
 protocols: []
 skills:
-- eightballer/ui_loader_abci:0.1.0:bafybeifavpljgx77bmtn44mlvnmbmjtei5zwmxyjbpn3a62z7ttszi4eji
-- valory/abstract_round_abci:0.1.0:bafybeibovsktd3uxur45nrcomq5shcn46cgxd5idmhxbmjhg32c5abyqim
-- valory/registration_abci:0.1.0:bafybeicnth5q4httefsusywx3zrrq4al47owvge72dqf2fziruicq6hqta
-- valory/reset_pause_abci:0.1.0:bafybeievjciqdvxhqxfjd4whqs27h6qbxqzrae7wwj7fpvxlvmtw3x35im
+- eightballer/reset_pause_abci:0.1.0:bafybeib64zqe5o5ine3ionw3y6lb4lxfvfz2x2lvi6lly2vds53ddg6o7e
+- eightballer/ui_loader_abci:0.1.0:bafybeibhdqwynhf5h5qmbbo3fg7vcf5ded5gwdxrsxxt2yz336ms6de6bq
+- valory/abstract_round_abci:0.1.0:bafybeie5qdfngt2nj4decrfsa4heho45kbj2p2oplmyrdn2jigb4sktx5e
+- valory/registration_abci:0.1.0:bafybeie26gsecxdvw5pv3mvwtpsci5h2524qibxuyodky52nn4qm2b6xja
 behaviours:
   main:
     args: {}

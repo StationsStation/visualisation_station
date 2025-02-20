@@ -18,12 +18,6 @@
 
 """This module contains the trader ABCI application."""
 
-from packages.valory.skills.reset_pause_abci.rounds import (
-    ResetPauseAbciApp,
-    ResetAndPauseRound,
-    FinishedResetAndPauseRound,
-    FinishedResetAndPauseErrorRound,
-)
 from packages.valory.skills.abstract_round_abci.base import AbciApp
 from packages.valory.skills.registration_abci.rounds import (
     AgentRegistrationAbciApp,
@@ -34,6 +28,12 @@ from packages.eightballer.skills.ui_loader_abci.rounds import (
     SetupRound,
     HealthcheckRound,
     ComponentLoadingAbciApp,
+)
+from packages.eightballer.skills.reset_pause_abci.rounds import (
+    ResetPauseAbciApp,
+    ResetAndPauseRound,
+    FinishedResetAndPauseRound,
+    FinishedResetAndPauseErrorRound,
 )
 from packages.valory.skills.abstract_round_abci.abci_app_chain import (
     AbciAppTransitionMapping,

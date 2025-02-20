@@ -72,6 +72,7 @@ class BaseRound(CollectSameUntilThresholdRound):
     payload_class = None
     payload_attribute = None
     synchronized_data_class = SynchronizedData
+    extended_requirements: tuple[str, ...] = ()
 
     def end_block(self) -> tuple[BaseSynchronizedData, Enum] | None:
         """Process the end of the block."""
