@@ -1,5 +1,7 @@
 # Changelog
 
+## [v0.1.5](https://github.com/StationsStation/visualisation_station/tree/v0.1.5) (2025-02-21)
+
 ## [v0.1.4](https://github.com/StationsStation/visualisation_station/tree/v0.1.4) (2025-02-20)
 
 ## [v0.1.3](https://github.com/StationsStation/visualisation_station/tree/v0.1.3) (2025-02-20)
