@@ -4,9 +4,9 @@
         "custom/eightballer/simple_react/0.1.0": "bafybeie6fv244pzrm55xc3cghxirg2gckvigcbhxzw3ie45wfeif6byeai",
         "custom/eightballer/simple_html/0.1.0": "bafybeid6cbv46ouqaz2wbyurf4a44zudpwmttjledjgx5y7m6izbwnmgq4",
         "skill/eightballer/ui_loader_abci/0.1.0": "bafybeidyv6evo5qadqysguvc75r4ftdz6s7svppdahivj76qh5ehjipcte",
-        "skill/eightballer/trader_abci/0.1.0": "bafybeih6ypsrejiyzfx2p4xh3wlq6xeyv4ecmpt7rr2dfq4kd7eozmwez4",
-        "skill/eightballer/reset_pause_abci/0.1.0": "bafybeigoofk5cv3eac6reipbylesuqweuljsz7jhlkpwlosjjjxdgueuci",
-        "agent/eightballer/frontend_agent/0.1.0": "bafybeiatug77hxeu6amrmcsbjh3vswktxevg4hhtrqrkgtlhfa2zgwdfre"
+        "skill/eightballer/trader_abci/0.1.0": "bafybeia6h5f7ln4scqnvmptjndt6dit2f6g3bi3ff6f5r3fqf264mmamgy",
+        "skill/eightballer/reset_pause_abci/0.1.0": "bafybeihrwz3tzh4ekidlyeh5fawpti64hvzpj2s2aczcbxwlwn5uerggde",
+        "agent/eightballer/frontend_agent/0.1.0": "bafybeiefgkry6lj7gad3iqvz2pi26jqlmh23so6zvcxgvczfnpif5e6dpa"
     },
     "third_party": {
         "protocol/eightballer/http/0.1.0": "bafybeid75xhq7hfdt7sgj7yrn44yj57xrgxscaw34ir46tndfzvodioxme",
