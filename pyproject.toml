@@ -31,7 +31,7 @@ open-aea = "==1.64.0"
 openapi-core = "==0.14.5"
 python-socketio = ">=5.9.0"
 redis = "^5.0.8"
-autonomy-dev = {version = "==0.2.135", extras = ["all"]}
+autonomy-dev = {version = "==0.2.136", extras = ["all"]}
 
 
 [tool.poetry.dev-dependencies]

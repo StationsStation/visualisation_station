@@ -54,42 +54,8 @@ class UserInterfaceHttpDialogue(BaseUiHttpDialogue):
     """Dialogue class for the ui_loader_abci skill."""
 
 
-class UserInterfaceHttpDialogues(Model, BaseUiHttpDialogues):
+class UserInterfaceHttpDialogues(BaseUiHttpDialogues):
     """Dialogues class for the ui_loader_abci skill."""
-
-    def __init__(self, **kwargs: Any) -> None:
-        """Initialize dialogues.
-
-        Args:
-        ----
-            **kwargs: Keyword arguments
-
-        """
-        Model.__init__(self, **kwargs)
-
-        def role_from_first_message(  # pylint: disable=unused-argument
-            message: Message, receiver_address: Address
-        ) -> BaseDialogue.Role:
-            """Infer the role of the agent from an incoming/outgoing first message.
-
-            Args:
-            ----
-                message (Message): an incoming/outgoing first message
-                receiver_address (Address): the address of the receiving agent
-
-            Returns:
-            -------
-                BaseDialogue.Role: The role of the agent
-
-            """
-            del message, receiver_address
-            return BaseUiHttpDialogue.Role.SERVER
-
-        BaseUiHttpDialogues.__init__(
-            self,
-            self_address=str(self.skill_id),
-            role_from_first_message=role_from_first_message,
-        )
 
 
 class UserInterfaceWebSocketDialogue(BaseWebsocketsDialogue):

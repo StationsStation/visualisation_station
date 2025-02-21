@@ -22,7 +22,7 @@ contracts: []
 protocols: []
 skills:
 - eightballer/reset_pause_abci:0.1.0:bafybeigoofk5cv3eac6reipbylesuqweuljsz7jhlkpwlosjjjxdgueuci
-- eightballer/ui_loader_abci:0.1.0:bafybeiawsfgl7kd7k4tptsldzmoc5hbj6pwqydsxt2ovxri7lzkxuwbaxu
+- eightballer/ui_loader_abci:0.1.0:bafybeidyv6evo5qadqysguvc75r4ftdz6s7svppdahivj76qh5ehjipcte
 - valory/abstract_round_abci:0.1.0:bafybeia27qmw6w5ds5fcrpj2475brnz742aampe3sgochloijs2l7jovai
 - valory/registration_abci:0.1.0:bafybeifaa6ejpihwxxxswqd5qfy63rixml43d3ljnezilflvdtclspjj6y
 behaviours:
