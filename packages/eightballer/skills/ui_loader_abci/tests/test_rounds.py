@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 # ------------------------------------------------------------------------------
 #
 #   Copyright 2024 Valory AG
@@ -19,19 +18,20 @@
 
 """This package contains the tests for rounds of ComponentLoading."""
 
-from dataclasses import dataclass, field
-from typing import Any, Callable, Dict, Hashable, List, Mapping, Type
+from typing import Any
+from dataclasses import field, dataclass
+from collections.abc import Mapping, Callable, Hashable
 
 import pytest
 
+from packages.valory.skills.abstract_round_abci.base import AbstractRound, BaseTxPayload
 from packages.eightballer.skills.ui_loader_abci.rounds import (
-    ErrorRound,
     Event,
-    HealthcheckRound,
+    ErrorRound,
     SetupRound,
+    HealthcheckRound,
     SynchronizedData,
 )
-from packages.valory.skills.abstract_round_abci.base import AbstractRound, BaseTxPayload
 from packages.valory.skills.abstract_round_abci.test_tools.rounds import (
     BaseRoundTestClass,
 )
@@ -39,15 +39,15 @@ from packages.valory.skills.abstract_round_abci.test_tools.rounds import (
 
 @dataclass
 class RoundTestCase:
-    """RoundTestCase"""
+    """RoundTestCase."""
 
     name: str
-    initial_data: Dict[str, Hashable]
+    initial_data: dict[str, Hashable]
     payloads: Mapping[str, BaseTxPayload]
-    final_data: Dict[str, Hashable]
+    final_data: dict[str, Hashable]
     event: Event
-    synchronized_data_attr_checks: List[Callable] = field(default_factory=list)
-    kwargs: Dict[str, Any] = field(default_factory=dict)
+    synchronized_data_attr_checks: list[Callable] = field(default_factory=list)
+    kwargs: dict[str, Any] = field(default_factory=dict)
 
 
 MAX_PARTICIPANTS: int = 4
@@ -56,13 +56,13 @@ MAX_PARTICIPANTS: int = 4
 class BaseComponentLoadingRoundTest(BaseRoundTestClass):
     """Base test class for ComponentLoading rounds."""
 
-    round_cls: Type[AbstractRound]
+    round_cls: type[AbstractRound]
     synchronized_data: SynchronizedData
     _synchronized_data_class = SynchronizedData
     _event_class = Event
 
     def run_test(self, test_case: RoundTestCase) -> None:
-        """Run the test"""
+        """Run the test."""
 
         self.synchronized_data.update(**test_case.initial_data)
 
@@ -74,9 +74,7 @@ class BaseComponentLoadingRoundTest(BaseRoundTestClass):
             self._test_round(  # pylint: disable=E1101
                 test_round=test_round,
                 round_payloads=test_case.payloads,
-                synchronized_data_update_fn=lambda sync_data, _: sync_data.update(
-                    **test_case.final_data
-                ),
+                synchronized_data_update_fn=lambda sync_data, _: sync_data.update(**test_case.final_data),
                 synchronized_data_attr_checks=test_case.synchronized_data_attr_checks,
                 exit_event=test_case.event,
                 **test_case.kwargs,  # varies per BaseRoundTestClass child

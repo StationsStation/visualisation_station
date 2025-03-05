@@ -1,6 +1,4 @@
-"""
-Simple handler funtions for the Ui ABCI loader.
-"""
+"""Simple handler funtions for the Ui ABCI loader."""
 
 import datetime
 
@@ -19,9 +17,8 @@ class PingPongHandler(Handler):
 
     def handle(self, message):
         """Handle the data."""
-        got_message = datetime.datetime.now().isoformat()
-        response = f"Pong @ {got_message}: {message.data}"
-        return response
+        got_message = datetime.datetime.now(tz=datetime.UTC).isoformat()
+        return f"Pong @ {got_message}: {message.data}"
 
     def teardown(self):
         """

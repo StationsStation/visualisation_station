@@ -1,10 +1,8 @@
-"""
-Behaviours for the simple react skill.
-"""
+"""Behaviours for the simple react skill."""
 
 import os
+from typing import cast
 from pathlib import Path
-from typing import Optional, cast
 
 from aea.skills.base import Behaviour
 
@@ -22,25 +20,19 @@ class LogReadingBehaviour(Behaviour):
     log_file: str = ""
 
     @property
-    def strategy(self) -> Optional[str]:
+    def strategy(self) -> str | None:
         """Get the strategy."""
-        return cast(
-            UserInterfaceClientStrategy, self.context.user_interface_client_strategy
-        )
+        return cast(UserInterfaceClientStrategy, self.context.user_interface_client_strategy)
 
     def setup(self):
-        """
-        Implement the setup.
-        """
+        """Implement the setup."""
         super().setup()
         self.lines = 0
         self.client_to_lines = {}
         self.log_file = os.environ.get("LOG_FILE", "log.txt")
 
     def send_message(self, data, dialogue):
-        """
-        Send a message to the client.
-        """
+        """Send a message to the client."""
         msg = dialogue.reply(
             performative=WebsocketsMessage.Performative.SEND,
             data=data,
@@ -48,13 +40,10 @@ class LogReadingBehaviour(Behaviour):
         self.context.outbox.put_message(message=msg)
 
     def teardown(self):
-        """
-        Implement the handler teardown.
-        """
+        """Implement the handler teardown."""
 
     def act(self):
-        """
-        We read in the log file and send the new lines to the client.
+        """We read in the log file and send the new lines to the client.
         We do so in an efficent manner, only reading the new lines.
         we make sure to send a message to all clients.
         """
@@ -64,10 +53,9 @@ class LogReadingBehaviour(Behaviour):
         """Read in each log line."""
         with open(
             Path(self.log_file),
-            "r",
             encoding="utf-8",
         ) as f:
             for line in f.readlines()[self.lines :]:
                 self.lines += 1
-                for _, dialogue in self.strategy.clients.items():
+                for dialogue in self.strategy.clients.values():
                     self.send_message(line, dialogue)

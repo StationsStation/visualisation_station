@@ -1,10 +1,11 @@
 [tool.poetry]
 name = "visualisation_station"
-version = "0.1.0"
+version = "0.1.8"
 description = ""
 authors = ["eightballer"]
 readme = "README.md"
 license = "Apache-2.0"
+package-mode = false 
 classifiers = [
     'License :: OSI Approved :: Apache Software License',
     'Natural Language :: English',
@@ -17,20 +18,20 @@ classifiers = [
 ]
 
 [tool.poetry.dependencies]
-python = "<3.12,>=3.11"
+python = "<3.12,>=3.10"
 cython = "<3.0.0"
-open-aea-ledger-solana = "==1.55.0"
-open-aea-ledger-cosmos = "==1.55.0"
-open-aea-ledger-ethereum = "==1.55.0"
-open-aea-cli-ipfs = "==1.55.0"
-open-aea-test-autonomy = "==0.15.2"
-open-autonomy = "==0.15.2"
-autonomy-dev = {version = "==0.2.72", extras = ["all"]}
+open-aea-ledger-solana = "==1.64.0"
+open-aea-ledger-cosmos = "==1.64.0"
+open-aea-ledger-ethereum = "==1.64.0"
+open-aea-cli-ipfs = "==1.64.0"
+open-aea-test-autonomy = "==0.19.4"
+open-autonomy = "==0.19.4"
 pytz = "==2022.2.1"
-open-aea = "==1.55.0"
+open-aea = "==1.64.0"
 openapi-core = "==0.14.5"
 python-socketio = ">=5.9.0"
 redis = "^5.0.8"
+autonomy-dev = {version = "==0.2.136", extras = ["all"]}
 
 
 [tool.poetry.dev-dependencies]

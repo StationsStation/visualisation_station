@@ -7,24 +7,24 @@ license: Apache-2.0
 aea_version: '>=1.0.0, <2.0.0'
 fingerprint:
   README.md: bafybeiab4xgadptz4mhvno4p6xvkh7p4peg7iuhotabydriu74dmj6ljga
-  __init__.py: bafybeifwtdmza425qylqref2u6mmjzsbxhpndssuur2ayscwt7sp7vs74u
-  behaviours.py: bafybeif3qd4pjwewstee46x24e45aavegkvp7t43jxafaortvcd6cgysou
-  composition.py: bafybeigdzplvkwsuhgo3d2sdtzqkb3nr2m62ur3azxctwoh3omy6vfyfou
-  dialogues.py: bafybeihhy5ejgfwwfhmyx2znysrfepxttx3hdt4k5a3exbxrcbazrtx7li
-  fsm_specification.yaml: bafybeigwqrxxah3c55ome4qffl7ck53hrk2uencz3lym6unfof6qakeqoe
-  handlers.py: bafybeiaslx45x4gax7v43vx2hzqyfps4zewur4yrrdfsenyxrmzp4sj3ye
-  models.py: bafybeifwb6ugaikluzzr23pha45l7t47ugvp7aix7m35epqcogq7irv43m
-  tests/__init__.py: bafybeih4oyyzgld4vqtbub6zrcrrfofbhmhbr37rvoxuhzchn3bhhjs7za
-  tests/test_custom.py: bafybeidafbtgi6v6gnvlkaxiyocgebdkrgcfzoj4j27zsfjbjjviaio6li
+  __init__.py: bafybeif4y2qp6y2iwldtfiwcy3ur4vdazwiw46o2dfbraxupvjpcz43c4m
+  behaviours.py: bafybeide7yr2tfp2vexuta35rkdo5otzld7tocr4tv4qaxi5ubzgzv57da
+  composition.py: bafybeidnrqtmjlwbnhjzxmm5ce73awy72ktmdberbrwvg7ar4celteesny
+  dialogues.py: bafybeigd3yshl6lbfo7g6fbrqzlftfujc7f3jjhq5y6bciaplgdlja5vqu
+  fsm_specification.yaml: bafybeicpmhlfnd7qvcjasaoaslz6dagory2bupdzu6molpnqsje7cyjhga
+  handlers.py: bafybeid6llm2zq3mycdpzwyhpxuxzpk4qb7hs7s5pyw2nrhztollhiukgi
+  models.py: bafybeiagjb46sttjvscaprmq5bpl5o4ytlo63qq7imxxtrgnbtntn47yqy
+  tests/__init__.py: bafybeiayjxaqrjpu7poz56eozqbi4ln7uene4r27bnq5qeely3ambcmggm
+  tests/test_custom.py: bafybeiaqu3mw6kq5yq7blk5vjrd5mtw5ej55vs32ftxdf225k3semjyn4u
 fingerprint_ignore_patterns: []
 connections: []
 contracts: []
 protocols: []
 skills:
-- eightballer/ui_loader_abci:0.1.0:bafybeifzupvgaog7eugauukzhxscce456uwapiuxjmtk5dnbitcufpss5q
-- valory/abstract_round_abci:0.1.0:bafybeibovsktd3uxur45nrcomq5shcn46cgxd5idmhxbmjhg32c5abyqim
-- valory/registration_abci:0.1.0:bafybeicnth5q4httefsusywx3zrrq4al47owvge72dqf2fziruicq6hqta
-- valory/reset_pause_abci:0.1.0:bafybeievjciqdvxhqxfjd4whqs27h6qbxqzrae7wwj7fpvxlvmtw3x35im
+- eightballer/reset_pause_abci:0.1.0:bafybeihrwz3tzh4ekidlyeh5fawpti64hvzpj2s2aczcbxwlwn5uerggde
+- eightballer/ui_loader_abci:0.1.0:bafybeidyv6evo5qadqysguvc75r4ftdz6s7svppdahivj76qh5ehjipcte
+- valory/abstract_round_abci:0.1.0:bafybeia27qmw6w5ds5fcrpj2475brnz742aampe3sgochloijs2l7jovai
+- valory/registration_abci:0.1.0:bafybeifaa6ejpihwxxxswqd5qfy63rixml43d3ljnezilflvdtclspjj6y
 behaviours:
   main:
     args: {}

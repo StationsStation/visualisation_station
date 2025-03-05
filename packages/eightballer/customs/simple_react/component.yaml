@@ -6,8 +6,8 @@ description: A simple react frontend to act as a template for the frontend ABCI 
 license: Apache-2.0
 aea_version: '>=1.0.0, <2.0.0'
 fingerprint:
-  __init__.py: bafybeie3a4f2zzoofzbe6yy6rivj7qtj4kye6qrl74kgfvs3gm3zrczwx4
-  behaviours.py: bafybeigf3axasho2oxlc3bpnfadmsndoqgmsh4kjx3xdbaumyx2ic5idze
+  __init__.py: bafybeidwwtpfuhelmwdkgh2ayk6hls62xpxns33f27qsryzd4vh2kw6hxq
+  behaviours.py: bafybeiadbbujl23thcggr55up7t7jo5nxjk5qty7uqf75xgw57nzrq3dwy
   build/asset-manifest.json: bafybeiabwchrj3bx7u5z325wpgqoqszuebbhd5zqmf7i7wqs33wxqcsrcy
   build/favicon.ico: bafybeigoxdaiyjbhlh3hq7b5myaowqlc22poxirhfjqzesxk4erea2e3pu
   build/index.html: bafybeieosmw2665gg7szvqtzvgw4v4ubioz3v2yupc7mko7qa6cexehktq
@@ -22,11 +22,11 @@ fingerprint:
   build/static/js/main.37072b1b.js: bafybeicquyxggyvto4trmooty3ljcoop3ej7akjdwsni72annf2bockcjy
   build/static/js/main.37072b1b.js.LICENSE.txt: bafybeibtpp7lwmzwjzxtse7kfiarsdodgx3ljsudh6g7y2ud6som2strxe
   build/static/js/main.37072b1b.js.map: bafybeieuoznm56ohc774nerh2lvhxsbwavccuokvxqwun5qpad3fynguuu
-  handlers.py: bafybeib3i6iizz7qe5dstrrcp4475lp5e5u5ni3gauemnmpduqsnnsna4i
+  handlers.py: bafybeiadt4dx2psweh5czv6yuk2qyqxkt7a64pkswya6iizcw4m7rwoi2y
   openapi3_spec.yaml: bafybeiagdbghwj4t4o7uctojvtkjp7i6zxpwu6dltjsawcaeuteyipftty
   readme.md: bafybeihztrfmxw7fhwfvfcjqnxiohctber6hdb7jopumb3mcmfpdzypdv4
-  tests/__init__.py: bafybeih4oyyzgld4vqtbub6zrcrrfofbhmhbr37rvoxuhzchn3bhhjs7za
-  tests/test_simple_react.py: bafybeidafbtgi6v6gnvlkaxiyocgebdkrgcfzoj4j27zsfjbjjviaio6li
+  tests/__init__.py: bafybeiayjxaqrjpu7poz56eozqbi4ln7uene4r27bnq5qeely3ambcmggm
+  tests/test_simple_react.py: bafybeiaqu3mw6kq5yq7blk5vjrd5mtw5ej55vs32ftxdf225k3semjyn4u
 fingerprint_ignore_patterns: []
 dependencies: {}
 api_spec: open_api3_spec.yaml

@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 # ------------------------------------------------------------------------------
 #
 #   Copyright 2024 Valory AG
@@ -20,7 +19,6 @@
 """This module contains the transaction payloads of the ComponentLoadingAbciApp."""
 
 from dataclasses import dataclass
-from typing import Optional
 
 from packages.valory.skills.abstract_round_abci.base import BaseTxPayload
 
@@ -29,18 +27,18 @@ from packages.valory.skills.abstract_round_abci.base import BaseTxPayload
 class ErrorPayload(BaseTxPayload):
     """Represent a transaction payload for the ErrorRound."""
 
-    error_data: Optional[str]
+    error_data: str | None
 
 
 @dataclass(frozen=True)
 class HealthcheckPayload(BaseTxPayload):
     """Represent a transaction payload for the HealthcheckRound."""
 
-    health_data: Optional[str]
+    health_data: str | None
 
 
 @dataclass(frozen=True)
 class SetupPayload(BaseTxPayload):
     """Represent a transaction payload for the SetupRound."""
 
-    setup_data: Optional[str]
+    setup_data: str | None
