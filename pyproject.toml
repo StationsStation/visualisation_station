@@ -20,18 +20,18 @@ classifiers = [
 [tool.poetry.dependencies]
 python = "<3.12,>=3.10"
 cython = "<3.0.0"
-open-aea-ledger-solana = "==1.64.0"
-open-aea-ledger-cosmos = "==1.64.0"
-open-aea-ledger-ethereum = "==1.64.0"
-open-aea-cli-ipfs = "==1.64.0"
-open-aea-test-autonomy = "==0.19.4"
-open-autonomy = "==0.19.4"
+open-aea-ledger-solana = "==1.65.0"
+open-aea-ledger-cosmos = "==1.65.0"
+open-aea-ledger-ethereum = "==1.65.0"
+open-aea-cli-ipfs = "==1.65.0"
+open-aea-test-autonomy = "==0.19.5"
+open-autonomy = "==0.19.5"
 pytz = "==2022.2.1"
-open-aea = "==1.64.0"
+open-aea = "==1.65.0"
 openapi-core = "==0.14.5"
 python-socketio = ">=5.9.0"
 redis = "^5.0.8"
-autonomy-dev = {version = "==0.2.136", extras = ["all"]}
+autonomy-dev = {version = "==0.2.149", extras = ["all"]}
 
 
 [tool.poetry.dev-dependencies]
