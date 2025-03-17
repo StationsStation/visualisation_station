@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "visualisation_station"
-version = "0.1.8"
+version = "0.1.9"
 description = ""
 authors = ["eightballer"]
 readme = "README.md"
