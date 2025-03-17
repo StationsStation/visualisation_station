@@ -1,5 +1,11 @@
 # Changelog
 
+## [v0.1.9](https://github.com/StationsStation/visualisation_station/tree/v0.1.9) (2025-03-17)
+
+**Merged pull requests:**
+
+- chore:bumped-deps [\#30](https://github.com/StationsStation/visualisation_station/pull/30)
+
 ## [v0.1.8](https://github.com/StationsStation/visualisation_station/tree/v0.1.8) (2025-02-21)
 
 ## [v0.1.5](https://github.com/StationsStation/visualisation_station/tree/v0.1.5) (2025-02-21)
